@@ -1,0 +1,241 @@
+import React, {useEffect, useState} from "react";
+
+import DropFile from "../components/DropFile";
+import {getLinks, uploadFiles} from "../services/api";
+import { InsertDriveFile, Close, Add } from "@material-ui/icons";
+import Chip from "@material-ui/core/Chip";
+import Button from "@material-ui/core/Button";
+import Select from "@material-ui/core/Select";
+import Input from "@material-ui/core/Input";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import MenuItem from "@material-ui/core/MenuItem";
+import { makeStyles } from "@material-ui/core";
+import T from "../localization";
+import Visited from "../components/Visited";
+
+const useStyles = makeStyles({
+  root: {
+    background: "#F7F7F7",
+    borderRadius: 10,
+    display: "flex",
+    justifyContent: "space-between",
+    padding: "7px 0px 7px 14px",
+    width: "100%",
+    marginBottom: 10,
+  },
+  button: {
+    background: "#FFFFFF",
+    boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.05)",
+    borderRadius: 3,
+    textTransform: "none",
+    padding: "14px 24px",
+    color: "#000",
+    marginBottom: 40,
+  },
+  buttonClose: {
+    boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.05)",
+    borderRadius: 3,
+    padding: "8",
+  },
+  linkButton: {
+    width: "80%",
+    background: "#0E7D7D",
+    borderRadius: 3,
+    textTransform: "none",
+    padding: "14px 97px",
+    color: "#fff",
+  },
+  downloadLink: {
+    color: "#0E7D7D",
+    textTransform: "none",
+  },
+  iconAdd: {
+    color: "#0E7D7D",
+  },
+  iconClose: {
+    color: "#FF5B5B",
+  },
+  iconFile: {
+    color: "#7AB8EC",
+  },
+  select: {
+    marginRight: 25,
+  },
+  input: {
+    padding: "5px 0 5px 30px",
+    width: "100%",
+    background: "#F7F7F7",
+    borderRadius: 3,
+    fontSize: 14,
+  },
+});
+
+const options = ["EN", "ES", "RU"];
+
+const AdminPage = () => {
+  const [files, setFiles] = useState([]);
+  const [dropVisible, setDropVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [downloadLink, setDownloadLink] = useState("");
+  const [packageName, setPackageName] = useState("");
+  const [language, setLanguage] = useState(options[0]);
+  const [links, setLinks] = useState({})
+  const classes = useStyles();
+
+  const addFiles = (file, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const fileExist = files.find((f) => f.name === file[0].name);
+    if (!fileExist) setFiles([...files, { data: file[0], name: file[0].name }]);
+  };
+
+  const upload = async () => {
+    if (!files.length) return;
+    try {
+      setIsLoading(true);
+      const data = new FormData();
+      files.map((file) => data.append(packageName, file.data));
+      const filePath = await uploadFiles(data);
+      setDownloadLink(process.env.REACT_APP_URL + filePath.data);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const deleteFile = (name) => {
+    setFiles(files.filter((file) => file.name !== name));
+  };
+
+  const copyToClipBoard = () => {
+    navigator.clipboard.writeText(downloadLink);
+  };
+
+  const changeLanguage = (lang) => {
+    setLanguage(lang);
+    T.setLanguage(lang);
+  };
+
+  useEffect(() => {
+    (async () => {
+      const track = await getLinks()
+      setLinks(track.data)
+    })()
+  }, [])
+
+  return (
+    <div className="admin-page">
+      <div className="admin-upload-files">
+        <div className="admin-upload-files-container">
+          <div
+            className={`admin-upload-files-container-wrapper ${
+              dropVisible ? "grow" : null
+            }`}
+          >
+            <h1>{T.uploadFiles}</h1>
+            <div className="upload-file-name">
+              <Input
+                className={classes.input}
+                disableUnderline
+                placeholder={T.fileNames}
+                value={packageName}
+                onChange={(e) => setPackageName(e.target.value)}
+              />
+              <Button
+                className={classes.buttonClose}
+                onClick={(e) => setPackageName("")}
+              >
+                <Close className={classes.iconClose} />
+              </Button>
+            </div>
+            <div className="upload-file-container">
+              <div className="upload-file-container-items">
+                {files.length
+                  ? files.map((file) => (
+                      <Chip
+                        key={file.name}
+                        className={classes.root}
+                        icon={<InsertDriveFile className={classes.iconFile} />}
+                        label={file.name}
+                        deleteIcon={<Close className={classes.iconClose} />}
+                        onDelete={(e) => deleteFile(file.name)}
+                      />
+                    ))
+                  : `${T.noFiles}`}
+              </div>
+              <Add className="drop-container-plus" />
+            </div>
+            {dropVisible && (
+              <DropFile addFiles={addFiles} label={T.dragnDrop} />
+            )}
+          </div>
+          <div>
+            <div>
+              <Button
+                onClick={(e) => setDropVisible(!dropVisible)}
+                className={classes.button}
+                endIcon={<Add className={classes.iconAdd} />}
+              >
+                {T.addFile}
+              </Button>
+            </div>
+            {!isLoading ? (
+              !downloadLink ? (
+                <>
+                  <Select
+                    labelId="demo-simple-select-autowidth-label"
+                    id="demo-simple-select-autowidth"
+                    className={classes.select}
+                    variant="outlined"
+                    value={language}
+                    onChange={(e) => changeLanguage(e.target.value)}
+                    autoWidth
+                  >
+                    {options.map((option) => (
+                      <MenuItem value={option} key={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <Button onClick={upload} className={classes.linkButton}>
+                    {T.getLink}
+                  </Button>
+                </>
+              ) : (
+                <div>
+                  <p className="download-link-description">{T.yourLink}</p>
+                  <div className="download-link-text">
+                    <p>{downloadLink}</p>
+                    <Button
+                      className={classes.downloadLink}
+                      onClick={copyToClipBoard}
+                    >
+                      {T.copy}
+                    </Button>
+                  </div>
+                </div>
+              )
+            ) : (
+              <div className="progress">
+                <CircularProgress />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="admin-upload-files">
+        <div className="admin-upload-files-container overflow-y">
+          <h1>{T.prevFiles}</h1>
+          {Object.keys(links).length ?
+            Object.entries(links).map(link => <Visited key={link[0]} link={link[0]} linkT={T.link} ips={link[1]} ipsT={T.IPvisited}/> )
+            :
+            null}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AdminPage;

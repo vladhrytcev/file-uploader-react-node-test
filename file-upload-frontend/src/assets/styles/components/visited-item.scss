@@ -1,0 +1,41 @@
+
+.visited-container {
+  background: #F9F9F9;
+  border-radius: 3px;
+  padding: 15px;
+  margin-bottom: 15px;
+
+  &-row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .paper-container {
+      flex-grow: 1;
+      height: 32px;
+      display: flex;
+      align-items: center;
+    }
+
+    h3 {
+      flex-basis: 20%;
+      font-size: 16px;
+      text-align: right;
+      margin: 0;
+    }
+
+    p {
+      margin: 10px;
+    }
+
+    h4 {
+      margin: 10px;
+    }
+
+    .grey {
+      color: #444444;
+      opacity: .7;
+    }
+  }
+}

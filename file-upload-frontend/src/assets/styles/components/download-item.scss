@@ -1,0 +1,32 @@
+.download-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  &-file {
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    border-radius: 10px;
+    flex-grow: 1;
+
+    img {
+      margin-right: 20px;
+    }
+
+    p {
+      color: #3B3B3B;
+      opacity: 0.5;
+    }
+  }
+
+  &-btn {
+    cursor: pointer;
+    margin-left: 11px;
+    padding: 0 16px;
+    border: none;
+    background: #FFFFFF;
+    border-radius: 10px;
+  }
+}
