@@ -46,6 +46,7 @@ body {
   margin: 19px auto;
   border-radius: 10px;
   text-align: center;
+  overflow-y: auto;
   @include container;
 
   h1 {
