@@ -12,10 +12,10 @@
     margin-bottom: 20px;
 
     .paper-container {
-      flex-grow: 1;
-      height: 32px;
+      width: 80%;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     h3 {
@@ -31,11 +31,14 @@
 
     h4 {
       margin: 10px;
+      word-break: break-all;
     }
 
     .grey {
       color: #444444;
       opacity: .7;
+      font-weight: 400;
+      flex-basis: 18%;
     }
   }
 }

@@ -8,10 +8,12 @@ const useStyles = makeStyles({
   iconClose: {
     color: "#FF5B5B",
     alignSelf: "flex-start",
-    cursor: 'pointer'
+    cursor: 'pointer',
+    fontSize: '1.2em'
   },
   paper: {
     marginRight: 10,
+    marginBottom: 10
   },
 });
 

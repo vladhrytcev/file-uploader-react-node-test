@@ -12,6 +12,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core";
 import T from "../localization";
 import Visited from "../components/Visited";
+import { copyToclipBoard } from "../utils/copyToClipboard";
 
 const useStyles = makeStyles({
   root: {
@@ -22,6 +23,7 @@ const useStyles = makeStyles({
     padding: "7px 0px 7px 14px",
     width: "100%",
     marginBottom: 10,
+    color: "#979797"
   },
   button: {
     background: "#FFFFFF",
@@ -65,7 +67,7 @@ const useStyles = makeStyles({
     color: "#7AB8EC",
   },
   select: {
-    display: 'table',
+    display: "table",
     marginRight: 25,
   },
   input: {
@@ -91,9 +93,9 @@ const AdminPage = () => {
   const chooseFileRef = useRef(null);
 
   const removeLink = async (link) => {
-    const newLinks = deleteLinks(link)
-    setLinks(newLinks)
-  }
+    const newLinks = deleteLinks(link);
+    setLinks(newLinks);
+  };
 
   const chooseFile = () => {
     chooseFileRef.current.click();
@@ -125,8 +127,9 @@ const AdminPage = () => {
     setFiles(files.filter((file) => file.name !== name));
   };
 
-  const copyToClipBoard = () => {
-    window.navigator.clipboard.writeText(downloadLink);
+  const copyClipBoard = () => {
+    if (window.navigator.clipboard) window.navigator.clipboard.writeText(downloadLink);
+    else copyToclipBoard(downloadLink);
   };
 
   const changeLanguage = (lang) => {
@@ -232,7 +235,7 @@ const AdminPage = () => {
                     <p>{downloadLink}</p>
                     <Button
                       className={classes.downloadLink}
-                      onClick={copyToClipBoard}
+                      onClick={copyClipBoard}
                     >
                       {T.copy}
                     </Button>

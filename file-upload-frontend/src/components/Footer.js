@@ -1,18 +1,18 @@
 import React from "react";
 
-const Footer = () => {
+const Footer = ({ T }) => {
   return (
     <footer className="footer">
       <p>
-        Contact Us on{" "}
+        {T.contactUs}{" "}
         <a href="#" className="footer-link">
           0330 021 8251
         </a>{" "}
-        or{" "}
+        {T.or}{" "}
         <a href="#" className="footer-link">
           info@kingsoftranslation.co.uk
         </a>{" "}
-        if you have any questions.
+        {T.questions}
       </p>
     </footer>
   );

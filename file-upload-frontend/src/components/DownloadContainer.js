@@ -5,14 +5,13 @@ import { downloadAction } from "../utils/downloadAction";
 import { downloadFile, downloadFolder } from "../services/api";
 
 const DownloadContainer = ({ parent, files }) => {
-
   const downloadItem = async (fileName) => {
-    const blob = await downloadFile(parent, fileName)
+    const blob = await downloadFile(parent, fileName);
     downloadAction(blob, fileName);
   };
 
   const downloadAll = async () => {
-    const blob = await downloadFolder(parent)
+    const blob = await downloadFolder(parent);
     downloadAction(blob, `${parent}.zip`);
   };
 
@@ -20,7 +19,7 @@ const DownloadContainer = ({ parent, files }) => {
     <div className="download-container">
       <div className="download-container-header">
         <div className="text">
-          <p>First part -name of files&nbsp;</p>
+          <p>{parent}&nbsp;</p>
           <p className="download-container-header-item-count">
             ({files.length})
           </p>
