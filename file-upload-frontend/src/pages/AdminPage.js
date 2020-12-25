@@ -126,7 +126,7 @@ const AdminPage = () => {
   };
 
   const copyToClipBoard = () => {
-    navigator.clipboard.writeText(downloadLink);
+    window.navigator.clipboard.writeText(downloadLink);
   };
 
   const changeLanguage = (lang) => {
