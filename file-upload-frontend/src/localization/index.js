@@ -32,7 +32,7 @@ export const loc = {
     link: "Enlace",
     IPvisited: "IP's Visitó",
     clientFiles: "¡Hemos preparado los archivos para ti!",
-    contactUs: "Contacta con nosotros en",
+    contactUs: "Contacta con nosotros en ",
     or: "o",
     questions: "si tienes alguna pregunta.",
     noClientFiles: "Aún no hay archivos en el servidor ..."
@@ -50,7 +50,7 @@ export const loc = {
     link: "Ссылка",
     IPvisited: "Посещали",
     clientFiles: "У нас тут файлы для вас",
-    contactUs: "Свяжитесь с нами",
+    contactUs: "Свяжитесь с нами ",
     or: "или",
     questions: "если у вас есть вопросы",
     noClientFiles: "На сервере нет файлов"

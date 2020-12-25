@@ -3,11 +3,13 @@ import { getFileTree } from "../services/api";
 import Footer from "../components/Footer";
 import DownloadContainer from "../components/DownloadContainer";
 import T from "../localization";
+import { getLoc } from "../utils/saveLoc";
 
 const ClientPage = () => {
   const [fileTree, setFileTree] = useState([]);
 
   useEffect(() => {
+    T.setLanguage(getLoc());
     (async () => {
       const files = await getFileTree();
       setFileTree(files.data);

@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core";
 import T from "../localization";
 import Visited from "../components/Visited";
 import { copyToclipBoard } from "../utils/copyToClipboard";
+import {getLoc, saveLoc} from "../utils/saveLoc";
 
 const useStyles = makeStyles({
   root: {
@@ -87,7 +88,7 @@ const AdminPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [downloadLink, setDownloadLink] = useState("");
   const [packageName, setPackageName] = useState("");
-  const [language, setLanguage] = useState(options[0]);
+  const [language, setLanguage] = useState(getLoc());
   const [links, setLinks] = useState({});
   const classes = useStyles();
   const chooseFileRef = useRef(null);
@@ -135,9 +136,11 @@ const AdminPage = () => {
   const changeLanguage = (lang) => {
     setLanguage(lang);
     T.setLanguage(lang);
+    saveLoc(lang)
   };
 
   useEffect(() => {
+    T.setLanguage(getLoc());
     (async () => {
       const track = await getLinks();
       setLinks(track.data);
