@@ -8,13 +8,14 @@ const useStyles = makeStyles({
   iconClose: {
     color: "#FF5B5B",
     alignSelf: "flex-start",
+    cursor: 'pointer'
   },
   paper: {
     marginRight: 10,
   },
 });
 
-const Visited = ({ link, linkT, ips, ipsT }) => {
+const Visited = ({ link, linkT, ips, ipsT, removeLink }) => {
   const classes = useStyles();
 
   return (
@@ -26,7 +27,7 @@ const Visited = ({ link, linkT, ips, ipsT }) => {
             <h4>{link}</h4>
           </Paper>
         </div>
-        <Close className={classes.iconClose} />
+        <Close className={classes.iconClose} onClick={e => removeLink(link)}/>
       </div>
       <div className="visited-container-row">
         <h3 className="grey">{ipsT}:</h3>

@@ -30,6 +30,12 @@ export const getLinks = async () => {
   return await api.get("/links");
 };
 
+export const deleteLinks = async (link) => {
+  return await api.delete("/links", {
+    headers: { 'id': link },
+  });
+};
+
 export const uploadFiles = async (files) => {
   return await api.post("/upload", files, {
     headers: {

@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import DropFile from "../components/DropFile";
-import {getLinks, uploadFiles} from "../services/api";
+import { getLinks, uploadFiles, deleteLinks } from "../services/api";
 import { InsertDriveFile, Close, Add } from "@material-ui/icons";
 import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
@@ -38,12 +38,18 @@ const useStyles = makeStyles({
     padding: "8",
   },
   linkButton: {
-    width: "80%",
+    flexGrow: 1,
     background: "#0E7D7D",
     borderRadius: 3,
     textTransform: "none",
-    padding: "14px 97px",
+    padding: "13px",
+    boxSizing: "border-box",
     color: "#fff",
+    transition: "all .2s ease-in",
+    "&:hover": {
+      background: "#0E7D7D",
+      opacity: 0.7,
+    },
   },
   downloadLink: {
     color: "#0E7D7D",
@@ -59,6 +65,7 @@ const useStyles = makeStyles({
     color: "#7AB8EC",
   },
   select: {
+    display: 'table',
     marginRight: 25,
   },
   input: {
@@ -79,8 +86,18 @@ const AdminPage = () => {
   const [downloadLink, setDownloadLink] = useState("");
   const [packageName, setPackageName] = useState("");
   const [language, setLanguage] = useState(options[0]);
-  const [links, setLinks] = useState({})
+  const [links, setLinks] = useState({});
   const classes = useStyles();
+  const chooseFileRef = useRef(null);
+
+  const removeLink = async (link) => {
+    const newLinks = deleteLinks(link)
+    setLinks(newLinks)
+  }
+
+  const chooseFile = () => {
+    chooseFileRef.current.click();
+  };
 
   const addFiles = (file, e) => {
     e.preventDefault();
@@ -119,10 +136,10 @@ const AdminPage = () => {
 
   useEffect(() => {
     (async () => {
-      const track = await getLinks()
-      setLinks(track.data)
-    })()
-  }, [])
+      const track = await getLinks();
+      setLinks(track.data);
+    })();
+  }, []);
 
   return (
     <div className="admin-page">
@@ -164,7 +181,13 @@ const AdminPage = () => {
                     ))
                   : `${T.noFiles}`}
               </div>
-              <Add className="drop-container-plus" />
+              <Add className="drop-container-plus" onClick={chooseFile} />
+              <input
+                type="file"
+                ref={chooseFileRef}
+                className="fileInput"
+                onChange={(e) => addFiles(e.target.files, e)}
+              />
             </div>
             {dropVisible && (
               <DropFile addFiles={addFiles} label={T.dragnDrop} />
@@ -182,7 +205,7 @@ const AdminPage = () => {
             </div>
             {!isLoading ? (
               !downloadLink ? (
-                <>
+                <div className="d-flex">
                   <Select
                     labelId="demo-simple-select-autowidth-label"
                     id="demo-simple-select-autowidth"
@@ -201,7 +224,7 @@ const AdminPage = () => {
                   <Button onClick={upload} className={classes.linkButton}>
                     {T.getLink}
                   </Button>
-                </>
+                </div>
               ) : (
                 <div>
                   <p className="download-link-description">{T.yourLink}</p>
@@ -228,10 +251,18 @@ const AdminPage = () => {
       <div className="admin-upload-files">
         <div className="admin-upload-files-container overflow-y">
           <h1>{T.prevFiles}</h1>
-          {Object.keys(links).length ?
-            Object.entries(links).map(link => <Visited key={link[0]} link={link[0]} linkT={T.link} ips={link[1]} ipsT={T.IPvisited}/> )
-            :
-            null}
+          {Object.keys(links).length
+            ? Object.entries(links).map((link) => (
+                <Visited
+                  key={link[0]}
+                  link={link[0]}
+                  linkT={T.link}
+                  ips={link[1]}
+                  ipsT={T.IPvisited}
+                  removeLink={removeLink}
+                />
+              ))
+            : null}
         </div>
       </div>
     </div>
