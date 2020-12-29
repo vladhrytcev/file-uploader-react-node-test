@@ -1,19 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import DropFile from "../components/DropFile";
-import { getLinks, uploadFiles, deleteLinks } from "../services/api";
-import { InsertDriveFile, Close, Add } from "@material-ui/icons";
-import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
-import Input from "@material-ui/core/Input";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core";
-import T from "../localization";
 import Visited from "../components/Visited";
 import { copyToclipBoard } from "../utils/copyToClipboard";
-import {getLoc, saveLoc} from "../utils/saveLoc";
+import FileStack from "../components/FileStack";
+import { Add } from "@material-ui/icons";
 
 const useStyles = makeStyles({
   root: {
@@ -24,9 +19,10 @@ const useStyles = makeStyles({
     padding: "7px 0px 7px 14px",
     width: "100%",
     marginBottom: 10,
-    color: "#979797"
+    color: "#979797",
   },
   button: {
+    maxWidth: "186px",
     background: "#FFFFFF",
     boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.05)",
     borderRadius: 3,
@@ -82,190 +78,159 @@ const useStyles = makeStyles({
 
 const options = ["EN", "ES", "RU"];
 
-const AdminPage = () => {
-  const [files, setFiles] = useState([]);
-  const [dropVisible, setDropVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [downloadLink, setDownloadLink] = useState("");
-  const [packageName, setPackageName] = useState("");
-  const [language, setLanguage] = useState(getLoc());
-  const [links, setLinks] = useState({});
+const defaultFileStack = { packageName: "", files: [], id: Date.now() };
+
+const AdminPage = ({
+  links,
+  getLinks,
+  uploadFiles,
+  isLoading,
+  resetLastCreateLink,
+  lastCreated,
+  deleteLink
+}) => {
+  const [fileStacks, setFileStacks] = useState([defaultFileStack]);
+  const [language, setLanguage] = useState(options[0]);
   const classes = useStyles();
-  const chooseFileRef = useRef(null);
-
-  const removeLink = async (link) => {
-    const newLinks = deleteLinks(link);
-    setLinks(newLinks);
-  };
-
-  const chooseFile = () => {
-    chooseFileRef.current.click();
-  };
-
-  const addFiles = (file, e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const fileExist = files.find((f) => f.name === file[0].name);
-    if (!fileExist) setFiles([...files, { data: file[0], name: file[0].name }]);
-  };
 
   const upload = async () => {
-    if (!files.length) return;
-    try {
-      setIsLoading(true);
-      const data = new FormData();
-      files.map((file) => data.append(packageName, file.data));
-      const filePath = await uploadFiles(data);
-      setDownloadLink(process.env.REACT_APP_URL + filePath.data);
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setIsLoading(false);
-    }
+    uploadFiles({ fileStacks, language, id: Date.now() });
   };
 
-  const deleteFile = (name) => {
-    setFiles(files.filter((file) => file.name !== name));
-  };
-
-  const copyClipBoard = () => {
-    if (window.navigator.clipboard) window.navigator.clipboard.writeText(downloadLink);
-    else copyToclipBoard(downloadLink);
+  const copyClipBoard = (e) => {
+    if (window.navigator.clipboard)
+      window.navigator.clipboard.writeText(lastCreated.address);
+    else copyToclipBoard(lastCreated.address);
+    e.target.innerText = "Copied";
   };
 
   const changeLanguage = (lang) => {
     setLanguage(lang);
-    T.setLanguage(lang);
-    saveLoc(lang)
+  };
+
+  const changePackageName = (id, name) => {
+    const result = fileStacks.map((fileStack) => {
+      if (fileStack.id === id) {
+        return {
+          ...fileStack,
+          packageName: name,
+        };
+      } else return fileStack;
+    });
+    setFileStacks(result);
+  };
+
+  const setPackageFiles = (id, files) => {
+    const result = fileStacks.map((fileStack) => {
+      if (fileStack.id === id) {
+        return {
+          ...fileStack,
+          files,
+        };
+      } else return fileStack;
+    });
+    setFileStacks(result);
+  };
+
+  const deleteFileStack = (id) => {
+    if (fileStacks.length <= 1) return;
+    setFileStacks(fileStacks.filter((fileStack) => fileStack.id !== id));
   };
 
   useEffect(() => {
-    T.setLanguage(getLoc());
-    (async () => {
-      const track = await getLinks();
-      setLinks(track.data);
-    })();
+    getLinks();
+    return () => resetLastCreateLink();
   }, []);
 
   return (
     <div className="admin-page">
       <div className="admin-upload-files">
         <div className="admin-upload-files-container">
-          <div
-            className={`admin-upload-files-container-wrapper ${
-              dropVisible ? "grow" : null
-            }`}
-          >
-            <h1>{T.uploadFiles}</h1>
-            <div className="upload-file-name">
-              <Input
-                className={classes.input}
-                disableUnderline
-                placeholder={T.fileNames}
-                value={packageName}
-                onChange={(e) => setPackageName(e.target.value)}
+          <div className="admin-upload-files-container-wrapper">
+            <h1>Upload files</h1>
+            {fileStacks.map((fileStack) => (
+              <FileStack
+                key={fileStack.id}
+                id={fileStack.id}
+                packageName={fileStack.packageName}
+                changeName={changePackageName}
+                files={fileStack.files}
+                setFiles={setPackageFiles}
+                deleteFileStack={deleteFileStack}
               />
-              <Button
-                className={classes.buttonClose}
-                onClick={(e) => setPackageName("")}
-              >
-                <Close className={classes.iconClose} />
-              </Button>
-            </div>
-            <div className="upload-file-container">
-              <div className="upload-file-container-items">
-                {files.length
-                  ? files.map((file) => (
-                      <Chip
-                        key={file.name}
-                        className={classes.root}
-                        icon={<InsertDriveFile className={classes.iconFile} />}
-                        label={file.name}
-                        deleteIcon={<Close className={classes.iconClose} />}
-                        onDelete={(e) => deleteFile(file.name)}
-                      />
-                    ))
-                  : `${T.noFiles}`}
-              </div>
-              <Add className="drop-container-plus" onClick={chooseFile} />
-              <input
-                type="file"
-                ref={chooseFileRef}
-                className="fileInput"
-                onChange={(e) => addFiles(e.target.files, e)}
-              />
-            </div>
-            {dropVisible && (
-              <DropFile addFiles={addFiles} label={T.dragnDrop} />
-            )}
-          </div>
-          <div>
+            ))}
+            <Button
+              className={classes.button}
+              endIcon={<Add className={classes.iconAdd} />}
+              onClick={(e) =>
+                setFileStacks([
+                  ...fileStacks,
+                  { packageName: "", files: [], id: Date.now() },
+                ])
+              }
+            >
+              Add one more
+            </Button>
             <div>
-              <Button
-                onClick={(e) => setDropVisible(!dropVisible)}
-                className={classes.button}
-                endIcon={<Add className={classes.iconAdd} />}
-              >
-                {T.addFile}
-              </Button>
-            </div>
-            {!isLoading ? (
-              !downloadLink ? (
-                <div className="d-flex">
-                  <Select
-                    labelId="demo-simple-select-autowidth-label"
-                    id="demo-simple-select-autowidth"
-                    className={classes.select}
-                    variant="outlined"
-                    value={language}
-                    onChange={(e) => changeLanguage(e.target.value)}
-                    autoWidth
-                  >
-                    {options.map((option) => (
-                      <MenuItem value={option} key={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <Button onClick={upload} className={classes.linkButton}>
-                    {T.getLink}
-                  </Button>
-                </div>
-              ) : (
-                <div>
-                  <p className="download-link-description">{T.yourLink}</p>
-                  <div className="download-link-text">
-                    <p>{downloadLink}</p>
-                    <Button
-                      className={classes.downloadLink}
-                      onClick={copyClipBoard}
+              {!isLoading ? (
+                !lastCreated ? (
+                  <div className="d-flex">
+                    <Select
+                      labelId="demo-simple-select-autowidth-label"
+                      id="demo-simple-select-autowidth"
+                      className={classes.select}
+                      variant="outlined"
+                      value={language}
+                      onChange={(e) => changeLanguage(e.target.value)}
+                      autoWidth
                     >
-                      {T.copy}
+                      {options.map((option) => (
+                        <MenuItem value={option} key={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <Button onClick={upload} className={classes.linkButton}>
+                      Get a download link
                     </Button>
                   </div>
+                ) : (
+                  <div>
+                    <p className="download-link-description">
+                      Your download link
+                    </p>
+                    <div className="download-link-text">
+                      <p>{lastCreated.address}</p>
+                      <Button
+                        className={classes.downloadLink}
+                        onClick={(e) => copyClipBoard(e)}
+                      >
+                        Copy
+                      </Button>
+                    </div>
+                  </div>
+                )
+              ) : (
+                <div className="progress">
+                  <CircularProgress />
                 </div>
-              )
-            ) : (
-              <div className="progress">
-                <CircularProgress />
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       <div className="admin-upload-files">
-        <div className="admin-upload-files-container overflow-y">
-          <h1>{T.prevFiles}</h1>
-          {Object.keys(links).length
-            ? Object.entries(links).map((link) => (
+        <div className="admin-upload-files-container">
+          <h1>Previous files</h1>
+          {links.length
+            ? links.map((link) => (
                 <Visited
-                  key={link[0]}
-                  link={link[0]}
-                  linkT={T.link}
-                  ips={link[1]}
-                  ipsT={T.IPvisited}
-                  removeLink={removeLink}
+                  key={link._id}
+                  id={link.link}
+                  link={link.address}
+                  ips={link.visited}
+                  removeLink={deleteLink}
                 />
               ))
             : null}

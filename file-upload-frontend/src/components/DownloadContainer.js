@@ -1,18 +1,38 @@
 import React from "react";
-import DownloadBtnBig from "./DownloadBtnBig";
 import DownloadItem from "./DownloadItem";
-import { downloadAction } from "../utils/downloadAction";
-import { downloadFile, downloadFolder } from "../services/api";
+import Button from "@material-ui/core/Button";
+import downloadIcon from "../assets/images/download.png";
+import { makeStyles } from "@material-ui/core";
 
-const DownloadContainer = ({ parent, files }) => {
-  const downloadItem = async (fileName) => {
-    const blob = await downloadFile(parent, fileName);
-    downloadAction(blob, fileName);
-  };
+const useStyles = makeStyles({
+  button: {
+    display: "flex",
+    padding: "0 16px",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#0e7d7d",
+    fontWeight: "600",
+    fontSize: 12,
+    borderRadius: 3,
+    border: "none",
+    cursor: "pointer",
+    textTransform: "none",
+    background: "#fff",
+  },
+});
 
-  const downloadAll = async () => {
-    const blob = await downloadFolder(parent);
-    downloadAction(blob, `${parent}.zip`);
+const DownloadContainer = ({
+  parent,
+  files,
+  id,
+  downloadFile,
+  downloadFolder,
+  T,
+}) => {
+  const styles = useStyles();
+
+  const downloadItem = (fileName) => {
+    downloadFile({ linkId: id, parent, fileName });
   };
 
   return (
@@ -24,7 +44,10 @@ const DownloadContainer = ({ parent, files }) => {
             ({files.length})
           </p>
         </div>
-        <DownloadBtnBig download={downloadAll} />
+        <Button className={styles.button} onClick={e => downloadFolder({ linkId: id, parent })}>
+          <p>{T.downloadAll}</p>
+          <img src={downloadIcon} alt="download" className="icon" />
+        </Button>
       </div>
       <div className="download-container-items">
         {files.length &&

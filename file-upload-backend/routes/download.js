@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { downloadFile, downloadFolder } from "../controllers/download";
+import { downloadFile, downloadFolder, getFiles } from "../controllers/download";
 
 const router = Router();
 
-router.get("/download/:folder", downloadFolder);
-router.get("/download/:folder/:filename", downloadFile);
+
+router.get("/files/:id", getFiles);
+router.get("/download/:linkId/:folder", downloadFolder);
+router.get("/download/:linkId/:folder/:filename", downloadFile);
 
 export default router;

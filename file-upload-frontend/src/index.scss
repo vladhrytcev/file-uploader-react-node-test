@@ -13,7 +13,6 @@ body {
 }
 
 .app {
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -61,22 +60,8 @@ body {
   }
 }
 
-.btn-big {
-  display: flex;
-  padding: 0 16px;
-  justify-content: center;
-  align-items: center;
-  color: #0e7d7d;
-  font-weight: 600;
-  font-size: 12px;
-  border-radius: 3px;
-  border: none;
-  cursor: pointer;
-  @include container;
-
-  img {
-    margin-left: 16px;
-  }
+.icon {
+  margin-left: 16px;
 }
 
 .admin-page {
@@ -93,7 +78,6 @@ body {
     max-width: 800px;
     width: 100%;
     flex-direction: column;
-    height: 100%;
     border-radius: 5px;
     @include container;
 
@@ -183,6 +167,17 @@ body {
   justify-content: center;
 }
 
+.progress-page {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .overflow-y {
   overflow-y: auto;
 }
@@ -192,6 +187,10 @@ body {
 }
 
 .d-flex {
+  box-sizing: border-box;
+  padding: 20px;
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }

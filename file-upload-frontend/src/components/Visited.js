@@ -8,31 +8,34 @@ const useStyles = makeStyles({
   iconClose: {
     color: "#FF5B5B",
     alignSelf: "flex-start",
-    cursor: 'pointer',
-    fontSize: '1.2em'
+    cursor: "pointer",
+    fontSize: "1.2em",
   },
   paper: {
     marginRight: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
 });
 
-const Visited = ({ link, linkT, ips, ipsT, removeLink }) => {
+const Visited = ({ link, ips, removeLink, id }) => {
   const classes = useStyles();
 
   return (
     <div className="visited-container">
       <div className="visited-container-row">
-        <h3>{linkT}:</h3>
+        <h3>Link:</h3>
         <div className="paper-container">
           <Paper elevation={0}>
             <h4>{link}</h4>
           </Paper>
         </div>
-        <Close className={classes.iconClose} onClick={e => removeLink(link)}/>
+        <Close
+          className={classes.iconClose}
+          onClick={(e) => removeLink(id)}
+        />
       </div>
       <div className="visited-container-row">
-        <h3 className="grey">{ipsT}:</h3>
+        <h3 className="grey">IP's visited:</h3>
         <div className="paper-container">
           {ips.length
             ? ips.map((ip, index) => (

@@ -3,40 +3,43 @@ import fs from "fs";
 import { UPLOAD_DIR } from "../helpers/uploadDir";
 import { NO_FILES_TO_UPLOAD, FOLDER_ALREADY_EXIST } from "../helpers/errors";
 import { asyncHandler } from "../middlewares/async";
-import linksDB from "../helpers/linksDB";
+import { Link } from "../models/Link";
 
-export const getFiles = asyncHandler(async (req, res, next) => {
-  const directories = fs.readdirSync(UPLOAD_DIR);
-  if (!directories.length) return res.send(directories);
-  const fileTree = directories.map((directory) => ({
-    dirName: directory,
-    files: fs.readdirSync(`${UPLOAD_DIR}/${directory}`),
-  }));
-  res.send(fileTree);
-});
+const makeDir = (path) => {
+  if (fs.existsSync(path)) return false
+  fs.mkdirSync(path);
+  return true
+}
 
 export const uploadFiles = asyncHandler(async (req, res, next) => {
+
   const { files } = req;
+  const { id } = req.params
+  const { lang } = req.headers
 
   if (!files) return next(NO_FILES_TO_UPLOAD);
-  const name = Object.keys(files)[0];
-  let dirName = "";
-  let data = Object.values(files)[0];
+  let dirNames = Object.keys(files);
+  const dirPath = `${UPLOAD_DIR}/${id}/`;
+  if (!makeDir(dirPath)) return next(FOLDER_ALREADY_EXIST);
+  const fileTree = {}
 
-  name ? (dirName = name) : (dirName = new Date().getTime().toString());
-  const dirPath = `${UPLOAD_DIR}/${dirName}/`;
+  for await (let dirName of dirNames) {
+    let dir
+    if (!Array.isArray(files[dirName])) dir = [files[dirName]];
+    else dir = files[dirName]
+    if (!makeDir(dirPath + dirName)) return next(FOLDER_ALREADY_EXIST);
+    fileTree[dirName] = []
 
-  if (fs.existsSync(dirPath)) return next(FOLDER_ALREADY_EXIST);
-  if (!Array.isArray(data)) data = [data];
-
-  fs.mkdirSync(dirPath);
-
-  for await (let file of data) {
-    const fileName = file.name;
-    await file.mv(dirPath + fileName);
+    for await (let file of dir) {
+      const fileName = file.name;
+      fileTree[dirName].push(file.name)
+      await file.mv(dirPath + dirName + "/" + fileName);
+    }
   }
+  const address = req.headers.referer + "client/" + id
 
-  linksDB[req.protocol + '://' + req.headers.host + '/api' + `/download/${dirName}`] = []
+  const link = new Link({link: id, language: lang, originalDir: dirPath, fileTree, address})
+  await link.save()
 
-  res.status(200).send(`/download/${dirName}`);
+  res.status(200).send(link);
 });

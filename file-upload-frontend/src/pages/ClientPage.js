@@ -1,38 +1,51 @@
-import React, { useEffect, useState } from "react";
-import { getFileTree } from "../services/api";
+import React, { useEffect } from "react";
+
 import Footer from "../components/Footer";
 import DownloadContainer from "../components/DownloadContainer";
 import T from "../localization";
-import { getLoc } from "../utils/saveLoc";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-const ClientPage = () => {
-  const [fileTree, setFileTree] = useState([]);
-
+const ClientPage = ({
+  downloadLink,
+  isLoading,
+  getDownloadLink,
+  match,
+  downloadFile,
+  downloadFolder,
+}) => {
   useEffect(() => {
-    T.setLanguage(getLoc());
-    (async () => {
-      const files = await getFileTree();
-      setFileTree(files.data);
-    })();
-  }, []);
+    if (!downloadLink) getDownloadLink(match.params.id);
+    else {
+      T.setLanguage(downloadLink.language);
+    }
+  }, [downloadLink]);
 
   return (
     <>
-      <div className="client-page">
-        <h1>{T.clientFiles}</h1>
-        {fileTree.length ? (
-          fileTree.map((dir, index) => (
-            <DownloadContainer
-              parent={dir.dirName}
-              files={dir.files}
-              key={index}
-            />
-          ))
-        ) : (
-          <>{T.noClientFiles}</>
-        )}
-      </div>
-      <Footer T={T} />
+      {!isLoading ? (
+        <>
+          <div className="client-page">
+            <h1>{T.clientFiles}</h1>
+            {downloadLink &&
+              Object.entries(downloadLink.fileTree).map((path, index) => (
+                <DownloadContainer
+                  T={T}
+                  parent={path[0]}
+                  files={path[1]}
+                  key={index}
+                  id={downloadLink.link}
+                  downloadFile={downloadFile}
+                  downloadFolder={downloadFolder}
+                />
+              ))}
+          </div>
+          <Footer T={T} />
+        </>
+      ) : (
+        <div className="progress-page">
+          <CircularProgress />
+        </div>
+      )}
     </>
   );
 };

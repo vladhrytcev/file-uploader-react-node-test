@@ -1,12 +1,11 @@
 import { Router } from "express";
-import { getFiles, uploadFiles } from "../controllers/upload";
-import { getLinks, deleteLinks } from "../controllers/links";
+import { uploadFiles } from "../controllers/upload";
+import { getLinks, deleteLink } from "../controllers/links";
 
 const router = Router();
 
-router.get("/", getFiles);
 router.get("/links", getLinks);
-router.delete("/links", deleteLinks);
-router.post("/upload", uploadFiles);
+router.delete("/link/:id", deleteLink);
+router.post("/upload/:id", uploadFiles);
 
 export default router;

@@ -1,10 +1,10 @@
-import ClientPage from "./pages/ClientPage";
-import AdminPage from "./pages/AdminPage";
+import ClientPage from "./containers/ClientPage";
+import AdminPage from "./containers/AdminPage";
 
 export const routes = [
   {
     component: ClientPage,
-    path: "/client",
+    path: "/client/:id",
   },
   {
     component: AdminPage,

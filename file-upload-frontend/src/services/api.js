@@ -6,40 +6,39 @@ const api = axios.create({
   withCredentials: true,
 });
 
-export const downloadFile = async (parent, fileName) => {
+export const downloadFile = async ({linkId, parent, fileName}) => {
   return await api
-    .get(`/download/${parent}/${fileName}`, { responseType: "blob" })
+    .get(`/download/${linkId}/${parent}/${fileName}`, { responseType: "blob" })
     .then((res) => {
       return new File([res.data], fileName);
     });
 };
 
-export const downloadFolder = async (parent) => {
+export const downloadFolder = async ({linkId, parent}) => {
   return await api
-    .get(`/download/${parent}`, { responseType: "blob" })
+    .get(`/download/${linkId}/${parent}`, { responseType: "blob" })
     .then((res) => {
       return new File([res.data], parent);
     });
 };
 
-export const getFileTree = async () => {
-  return await api.get("/");
+export const getFileTree = async (id) => {
+  return await api.get(`/files/${id}`);
 };
 
 export const getLinks = async () => {
   return await api.get("/links");
 };
 
-export const deleteLinks = async (link) => {
-  return await api.delete("/links", {
-    headers: { 'id': link },
-  });
+export const deleteLink = async (id) => {
+  return await api.delete(`/link/${id}`);
 };
 
-export const uploadFiles = async (files) => {
-  return await api.post("/upload", files, {
+export const uploadFiles = async (data) => {
+  return await api.post(`/upload/${data.id}`, data.files, {
     headers: {
       "Content-Type": "multipart/form-data",
+      lang: data.lang
     },
   });
 };
