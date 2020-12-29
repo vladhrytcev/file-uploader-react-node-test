@@ -64,7 +64,6 @@ const useStyles = makeStyles({
     color: "#7AB8EC",
   },
   select: {
-    display: "table",
     marginRight: 25,
   },
   input: {

@@ -21,12 +21,15 @@ const useStyles = makeStyles({
   buttonClose: {
     boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.05)",
     borderRadius: 3,
-    padding: "8",
+    padding: 8,
   },
   iconAdd: {
     color: "#0E7D7D",
   },
   iconClose: {
+    width: "1em",
+    height: "1em",
+    fontSize: "1.2rem",
     color: "#FF5B5B",
   },
   iconFile: {
