@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
-import { Add, Close, InsertDriveFile } from "@material-ui/icons";
+import { Add, Close } from "@material-ui/icons";
+import fileIcon from "../assets/images/file.png";
 import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core";
 import { FileDrop } from "react-file-drop";
@@ -13,10 +14,11 @@ const useStyles = makeStyles({
     borderRadius: 10,
     display: "flex",
     justifyContent: "space-between",
-    padding: "7px 0px 7px 14px",
+    padding: "5px 0px 5px 14px",
     width: "100%",
     marginBottom: 10,
     color: "#979797",
+    boxSizing: 'initial'
   },
   buttonClose: {
     boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.05)",
@@ -31,9 +33,6 @@ const useStyles = makeStyles({
     height: "1em",
     fontSize: "1.2rem",
     color: "#FF5B5B",
-  },
-  iconFile: {
-    color: "#7AB8EC",
   },
   select: {
     display: "table",
@@ -77,8 +76,16 @@ const FileStack = ({
   };
 
   const deleteFile = (name) => {
-    setFiles(id, files.filter((file) => file.name !== name));
+    setFiles(
+      id,
+      files.filter((file) => file.name !== name)
+    );
   };
+
+  const nameCutter = (str) => {
+    if(str.length > 40) return str.slice(0, 40).concat("..." + str.split(".")[1])
+    else return str
+  }
 
   return (
     <div>
@@ -132,10 +139,8 @@ const FileStack = ({
                         <Chip
                           key={file.name}
                           className={classes.root}
-                          icon={
-                            <InsertDriveFile className={classes.iconFile} />
-                          }
-                          label={file.name}
+                          icon={<img src={fileIcon} alt="file" />}
+                          label={nameCutter(file.name)}
                           deleteIcon={<Close className={classes.iconClose} />}
                           onDelete={(e) => deleteFile(file.name)}
                         />

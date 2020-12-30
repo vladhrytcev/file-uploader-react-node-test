@@ -13,6 +13,7 @@ const ClientPage = ({
   downloadFile,
   downloadFolder,
 }) => {
+
   useEffect(() => {
     if (!downloadLink) getDownloadLink(match.params.id);
     else {

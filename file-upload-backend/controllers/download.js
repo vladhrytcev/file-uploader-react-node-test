@@ -10,12 +10,14 @@ import { asyncHandler } from "../middlewares/async";
 
 export const getFiles = asyncHandler(async (req, res, next) => {
   const { id } = req.params
+  const visitor = req.ip.replace("::ffff:", "")
   const link = await Link.findOne({link: id})
   const visited = link.visited
-  if(visited.find(ip => ip === req.ip)) return res.send(link);
-
-  link.visited.push(req.ip)
-  link.save()
+  if(!visited.find(ip => ip === visitor)) {
+    link.visited.push(visitor)
+    link.save()
+  }
+  res.send(link)
 });
 
 export const downloadFile = asyncHandler(async (req, res, next) => {
