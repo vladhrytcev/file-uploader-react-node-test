@@ -9,6 +9,7 @@ const makeName = (packageName) => {
 
 const uploadAllFiles = function* ({ payload }) {
   const data = new FormData();
+
   for(let fileStack of payload.fileStacks) {
     if(!fileStack.files.length) return
     const name = makeName(fileStack.packageName)

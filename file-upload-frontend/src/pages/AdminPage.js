@@ -28,8 +28,9 @@ const useStyles = makeStyles({
     borderRadius: 3,
     textTransform: "none",
     padding: "14px 24px",
-    color: "#000",
+    color: '#444444',
     marginBottom: 40,
+    fontWeight: 600,
   },
   buttonClose: {
     boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.05)",
@@ -44,6 +45,7 @@ const useStyles = makeStyles({
     padding: "13px",
     boxSizing: "border-box",
     color: "#fff",
+    fontWeight: 600,
     transition: "all .2s ease-in",
     "&:hover": {
       background: "#0E7D7D",
@@ -65,6 +67,8 @@ const useStyles = makeStyles({
   },
   select: {
     marginRight: 25,
+    color: '#767676',
+    fontWeight: 600,
   },
   input: {
     padding: "5px 0 5px 30px",
@@ -173,7 +177,7 @@ const AdminPage = ({
             <div>
               {!isLoading ? (
                 !lastCreated ? (
-                  <div className="d-flex">
+                  <div className="d-flex p-0">
                     <Select
                       labelId="demo-simple-select-autowidth-label"
                       id="demo-simple-select-autowidth"
@@ -220,7 +224,7 @@ const AdminPage = ({
       </div>
 
       <div className="admin-upload-files">
-        <div className="admin-upload-files-container">
+        <div className="admin-upload-files-container mw-70">
           <h1>Previous files</h1>
           {links.length
             ? links.map((link) => (

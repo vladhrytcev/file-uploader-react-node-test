@@ -13,7 +13,6 @@ const useStyles = makeStyles({
   },
   paper: {
     marginRight: 10,
-    marginBottom: 10,
   },
 });
 

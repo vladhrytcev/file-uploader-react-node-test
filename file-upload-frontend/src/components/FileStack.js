@@ -15,15 +15,18 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-between",
     padding: "5px 0px 5px 14px",
-    width: "100%",
     marginBottom: 10,
     color: "#979797",
-    boxSizing: 'initial'
+    boxSizing: 'initial',
+    "&:last-child": {
+      marginBottom: 0,
+    },
   },
   buttonClose: {
     boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.05)",
     borderRadius: 3,
     padding: 8,
+    minWidth: 'initial'
   },
   iconAdd: {
     color: "#0E7D7D",
