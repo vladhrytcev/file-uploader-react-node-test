@@ -39,7 +39,7 @@ const DownloadContainer = ({
     <div className="download-container">
       <div className="download-container-header">
         <div className="text">
-          <p>{parent}&nbsp;</p>
+          <p>{parent}&nbsp;&nbsp;</p>
           <p className="download-container-header-item-count">
             ({files.length})
           </p>
@@ -49,11 +49,13 @@ const DownloadContainer = ({
           <img src={downloadIcon} alt="download" className="icon" />
         </Button>
       </div>
-      <div className="download-container-items">
-        {files.length &&
+      <div className="pb-12">
+        <div className="download-container-items">
+          {files.length &&
           files.map((file, index) => (
             <DownloadItem download={downloadItem} fileName={file} key={index} />
           ))}
+        </div>
       </div>
     </div>
   );

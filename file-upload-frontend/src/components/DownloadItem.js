@@ -8,11 +8,13 @@ const useStyles = makeStyles({
   button: {
     cursor: "pointer",
     marginLeft: 11,
+    marginRight: 19,
     padding: "0 16px",
     border: "none",
     borderRadius: 10,
     textTransform: "none",
     background: "#fff",
+    minWidth: 'initial'
   },
 });
 

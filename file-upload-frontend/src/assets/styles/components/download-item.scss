@@ -3,6 +3,10 @@
   justify-content: space-between;
   margin-bottom: 10px;
 
+  &:last-child {
+    margin-bottom: 0;
+  }
+
   &-file {
     padding: 7px 20px;
     display: flex;
@@ -16,6 +20,8 @@
     }
 
     p {
+      font-size: 14px;
+      margin: 0;
       color: #3B3B3B;
       opacity: 0.5;
     }

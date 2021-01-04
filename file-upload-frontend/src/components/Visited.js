@@ -12,7 +12,9 @@ const useStyles = makeStyles({
     fontSize: "1.2em",
   },
   paper: {
-    marginRight: 10,
+    marginRight: 5,
+    marginBottom: 5,
+    boxSizing: 'border-box'
   },
 });
 
@@ -33,8 +35,8 @@ const Visited = ({ link, ips, removeLink, id }) => {
           onClick={(e) => removeLink(id)}
         />
       </div>
-      <div className="visited-container-row">
-        <h3 className="grey">IP's visited:</h3>
+      <div className="visited-container-row align-items-none">
+        <h3 className="grey second-row-m">IP's visited:</h3>
         <div className="paper-container">
           {ips.length
             ? ips.map((ip, index) => (

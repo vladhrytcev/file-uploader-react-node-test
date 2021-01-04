@@ -5,11 +5,19 @@
   padding: 10px 4px;
   margin-bottom: 15px;
 
+  .align-items-none {
+    align-items: initial;
+  }
+
+  .second-row-m {
+    margin-top: 6px;
+  }
+
   &-row {
     display: flex;
     gap: 15px;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 
     &:last-child {
       margin-bottom: 0;
@@ -30,11 +38,11 @@
     }
 
     p {
-      margin: 7px 10px;
+      margin: 5px 10px;
     }
 
     h4 {
-      margin: 5px 10px;
+      margin: 7px 10px;
       font-size: 14px;
       word-break: break-all;
     }
