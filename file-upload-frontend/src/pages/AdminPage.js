@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/core";
 import Visited from "../components/Visited";
 import { copyToclipBoard } from "../utils/copyToClipboard";
 import FileStack from "../components/FileStack";
-import { Add } from "@material-ui/icons";
+import addIcon from "../assets/images/plus_no_bg.svg"
 
 const useStyles = makeStyles({
   root: {
@@ -31,6 +31,7 @@ const useStyles = makeStyles({
     color: '#444444',
     marginBottom: 40,
     fontWeight: 600,
+    fontSize: 12
   },
   buttonClose: {
     boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.05)",
@@ -55,15 +56,6 @@ const useStyles = makeStyles({
   downloadLink: {
     color: "#0E7D7D",
     textTransform: "none",
-  },
-  iconAdd: {
-    color: "#0E7D7D",
-  },
-  iconClose: {
-    color: "#FF5B5B",
-  },
-  iconFile: {
-    color: "#7AB8EC",
   },
   select: {
     marginRight: 25,
@@ -164,7 +156,7 @@ const AdminPage = ({
             ))}
             <Button
               className={classes.button}
-              endIcon={<Add className={classes.iconAdd} />}
+              endIcon={<img src={addIcon} alt="add" className="add-icon-margin" />}
               onClick={(e) =>
                 setFileStacks([
                   ...fileStacks,
@@ -198,7 +190,7 @@ const AdminPage = ({
                     </Button>
                   </div>
                 ) : (
-                  <div>
+                  <>
                     <p className="download-link-description">
                       Your download link
                     </p>
@@ -211,7 +203,7 @@ const AdminPage = ({
                         Copy
                       </Button>
                     </div>
-                  </div>
+                  </>
                 )
               ) : (
                 <div className="progress">

@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
-import { Add, Close } from "@material-ui/icons";
-import fileIcon from "../assets/images/file.png";
+import closeIcon from "../assets/images/icon_close.svg"
+import addIcon from "../assets/images/plus.svg"
+import fileIcon from "../assets/images/file.svg";
 import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core";
 import { FileDrop } from "react-file-drop";
@@ -25,17 +26,11 @@ const useStyles = makeStyles({
   buttonClose: {
     boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.05)",
     borderRadius: 3,
-    padding: 8,
+    padding: 14.5,
     minWidth: 'initial'
   },
   iconAdd: {
     color: "#0E7D7D",
-  },
-  iconClose: {
-    width: "1em",
-    height: "1em",
-    fontSize: "1.2rem",
-    color: "#FF5B5B",
   },
   select: {
     display: "table",
@@ -101,13 +96,13 @@ const FileStack = ({
               className={classes.buttonClose}
               onClick={(e) => deleteFileStack(id)}
             >
-              <Close className={classes.iconClose} />
+              <img src={closeIcon} alt="close" />
             </Button>
           </div>
           <div className="drop-container">
             <FileDrop onDrop={(files, e) => addFiles(files, e)}>
               <p>Drag & drop files</p>
-              <Add className="drop-container-plus" onClick={chooseFile} />
+              <img src={addIcon} alt="add" className="drop-container-plus" onClick={chooseFile}/>
             </FileDrop>
           </div>
         </>
@@ -125,7 +120,7 @@ const FileStack = ({
               className={classes.buttonClose}
               onClick={(e) => deleteFileStack(id)}
             >
-              <Close className={classes.iconClose} />
+              <img src={closeIcon} alt="close" />
             </Button>
           </div>
           <div className="drop-container with-files">
@@ -139,13 +134,13 @@ const FileStack = ({
                           className={classes.root}
                           icon={<img src={fileIcon} alt="file" />}
                           label={file.name}
-                          deleteIcon={<Close className={classes.iconClose} />}
+                          deleteIcon={<img src={closeIcon} className="wh-0 icon-close-margin" alt="close" />}
                           onDelete={(e) => deleteFile(file.name)}
                         />
                       ))
                     : null}
                 </div>
-                <Add className="drop-container-plus" onClick={chooseFile} />
+                <img src={addIcon} alt="add" className="drop-container-plus" onClick={chooseFile}/>
               </div>
             </FileDrop>
           </div>

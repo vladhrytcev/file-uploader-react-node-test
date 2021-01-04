@@ -113,6 +113,10 @@ body {
     .mw-70 {
       max-width: 70%;
     }
+
+    .add-icon-margin {
+      margin-left: 20px !important;
+    }
   }
 }
 
@@ -156,8 +160,9 @@ body {
   box-sizing: border-box;
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.05);
   border-radius: 3px;
-  padding: 1px 22px;
+  padding: 1px 4px 1px 22px;
   font-weight: 600;
+  font-size: 14px;
 
   p {
     margin: 0;
@@ -165,6 +170,7 @@ body {
 }
 
 .download-link-description {
+  font-size: 14px;
   color: #444444;
   margin: 0 0 4px 0;
 }
@@ -209,6 +215,11 @@ body {
 
 .p-0 {
   padding: 0;
+}
+
+.wh-0 {
+  width: initial !important;
+  height: initial !important;
 }
 
 

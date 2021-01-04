@@ -1,16 +1,10 @@
 import React from "react";
-import { Close } from "@material-ui/icons";
 import "../assets/styles/components/visited-item.scss";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core";
+import closeIcon from "../assets/images/icon_close.svg"
 
 const useStyles = makeStyles({
-  iconClose: {
-    color: "#FF5B5B",
-    alignSelf: "flex-start",
-    cursor: "pointer",
-    fontSize: "1.2em",
-  },
   paper: {
     marginRight: 5,
     marginBottom: 5,
@@ -30,10 +24,7 @@ const Visited = ({ link, ips, removeLink, id }) => {
             <h4>{link}</h4>
           </Paper>
         </div>
-        <Close
-          className={classes.iconClose}
-          onClick={(e) => removeLink(id)}
-        />
+        <img src={closeIcon} alt="close" className="icon-close" onClick={(e) => removeLink(id)} />
       </div>
       <div className="visited-container-row align-items-none">
         <h3 className="grey second-row-m">IP's visited:</h3>

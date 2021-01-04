@@ -16,9 +16,7 @@
   &-plus {
     background: #F7F7F7;
     border-radius: 3px;
-    color: #0E7D7D;
     font-size: 30px;
-    padding: 18px;
     cursor: pointer;
   }
 
@@ -67,4 +65,8 @@
 
 .with-files {
   height: auto;
+}
+
+.icon-close-margin {
+  margin-right: 13px !important;
 }

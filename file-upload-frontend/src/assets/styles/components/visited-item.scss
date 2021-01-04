@@ -1,8 +1,7 @@
-
 .visited-container {
   background: #F9F9F9;
   border-radius: 3px;
-  padding: 10px 4px;
+  padding: 10px 10px 10px 4px;
   margin-bottom: 15px;
 
   .align-items-none {
@@ -11,6 +10,11 @@
 
   .second-row-m {
     margin-top: 6px;
+  }
+
+  .icon-close {
+    align-self: flex-start;
+    cursor: pointer;
   }
 
   &-row {

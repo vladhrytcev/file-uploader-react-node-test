@@ -1,7 +1,7 @@
 import React from "react";
 import DownloadItem from "./DownloadItem";
 import Button from "@material-ui/core/Button";
-import downloadIcon from "../assets/images/download.png";
+import downloadIcon from "../assets/images/download.svg";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({
