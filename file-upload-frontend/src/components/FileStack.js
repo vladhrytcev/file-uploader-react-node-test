@@ -85,11 +85,6 @@ const FileStack = ({
     );
   };
 
-  const nameCutter = (str) => {
-    if(str.length > 40) return str.slice(0, 40).concat("..." + str.split(".")[1])
-    else return str
-  }
-
   return (
     <div>
       {!files.length ? (
@@ -143,7 +138,7 @@ const FileStack = ({
                           key={file.name}
                           className={classes.root}
                           icon={<img src={fileIcon} alt="file" />}
-                          label={nameCutter(file.name)}
+                          label={file.name}
                           deleteIcon={<Close className={classes.iconClose} />}
                           onDelete={(e) => deleteFile(file.name)}
                         />

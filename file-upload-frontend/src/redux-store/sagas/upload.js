@@ -1,20 +1,18 @@
 import { takeLatest, put, select } from "redux-saga/effects";
 import { safe } from "./errorHandler";
 import { uploadFiles } from "../../services/api";
+import { checkFolderNames } from "../../utils/helpers";
 import { UPLOAD_FILES, SET_LINKS, SET_LAST_CREATED_LINK } from "../actions/types";
-
-const makeName = (packageName) => {
-  return packageName || Math.round(Date.now() + (Math.random() * 1000)).toString()
-}
 
 const uploadAllFiles = function* ({ payload }) {
   const data = new FormData();
 
-  for(let fileStack of payload.fileStacks) {
+  const checkedArray = checkFolderNames('packageName' ,payload.fileStacks)
+
+  for(let fileStack of checkedArray) {
     if(!fileStack.files.length) return
-    const name = makeName(fileStack.packageName)
     for(let file of fileStack.files) {
-      yield data.append(name, file.data)
+      yield data.append(fileStack.packageName, file.data)
     }
   }
   const link = yield uploadFiles({files: data, id: payload.id, lang: payload.language});
