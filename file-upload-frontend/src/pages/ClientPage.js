@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import Footer from "../components/Footer";
 import DownloadContainer from "../components/DownloadContainer";
 import T from "../localization";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { LoopCircleLoading } from 'react-loadingg';
 
 const ClientPage = ({
   downloadLink,
@@ -45,7 +45,7 @@ const ClientPage = ({
         </>
       ) : (
         <div className="progress-page">
-          <CircularProgress />
+          <LoopCircleLoading color="#0E7D7D" size="large" style={{width: 70, height: 70}}/>
         </div>
       )}
     </>
