@@ -18,12 +18,12 @@ const useStyles = makeStyles({
   },
 });
 
-const DownloadItem = ({ fileName, download }) => {
+const DownloadItem = ({ fileName, download, downloadOrOpenItem }) => {
   const styles = useStyles();
 
   return (
     <div className="download-item">
-      <div className="download-item-file">
+      <div className="download-item-file" onClick={e => downloadOrOpenItem(fileName)}>
         <img src={fileIcon} alt="file" />
         <p>{fileName}</p>
       </div>

@@ -7,3 +7,17 @@ export const downloadAction = (blob, fileName) => {
   link.click();
   link.remove();
 };
+
+export const openPdfFile = (blob) => {
+  const downloadUrl = window.URL.createObjectURL(blob);
+  window.open(downloadUrl)
+}
+
+export const isPDF = (filename) => {
+  return getFileExtension(filename) === "pdf"
+}
+
+const getFileExtension = (filename) => {
+  const ext = /^.+\.([^.]+)$/.exec(filename);
+  return ext === null ? "" : ext[1];
+}

@@ -6,6 +6,7 @@ import {
   GET_DOWNLOAD_LINK,
   DOWNLOAD_FILE,
   DOWNLOAD_FOLDER,
+  DOWNLOAD_OR_OPEN_FILE
 } from "./types";
 
 export const getLinks = () => ({
@@ -34,6 +35,11 @@ export const resetLastCreateLink = () => ({
 
 export const downloadFile = (path) => ({
   type: DOWNLOAD_FILE,
+  payload: path
+});
+
+export const downloadOrOpenFile = (path) => ({
+  type: DOWNLOAD_OR_OPEN_FILE,
   payload: path
 });
 

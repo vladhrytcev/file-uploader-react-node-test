@@ -26,6 +26,7 @@ const DownloadContainer = ({
   files,
   id,
   downloadFile,
+  downloadOrOpenFile,
   downloadFolder,
   T,
 }) => {
@@ -33,6 +34,10 @@ const DownloadContainer = ({
 
   const downloadItem = (fileName) => {
     downloadFile({ linkId: id, parent, fileName });
+  };
+
+  const downloadOrOpenItem = (fileName) => {
+    downloadOrOpenFile({ linkId: id, parent, fileName });
   };
 
   return (
@@ -44,17 +49,29 @@ const DownloadContainer = ({
             ({files.length})
           </p>
         </div>
-        <Button className={styles.button} onClick={e => downloadFolder({ linkId: id, parent })}>
+        <Button
+          className={styles.button}
+          onClick={(e) => downloadFolder({ linkId: id, parent })}
+        >
           <p>{T.downloadAll}</p>
-          <img src={downloadIcon} alt="download" className="icon download-icon" />
+          <img
+            src={downloadIcon}
+            alt="download"
+            className="icon download-icon"
+          />
         </Button>
       </div>
       <div className="pb-12">
         <div className="download-container-items">
           {files.length &&
-          files.map((file, index) => (
-            <DownloadItem download={downloadItem} fileName={file} key={index} />
-          ))}
+            files.map((file, index) => (
+              <DownloadItem
+                download={downloadItem}
+                downloadOrOpenItem={downloadOrOpenItem}
+                fileName={file}
+                key={index}
+              />
+            ))}
         </div>
       </div>
     </div>
