@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_URL,
-  timeout: 4000,
+  timeout: 10000,
   withCredentials: true,
 });
 
@@ -36,6 +36,10 @@ export const deleteLink = async (id) => {
 
 export const uploadFiles = async (data) => {
   return await api.post(`/upload/${data.id}`, data.files, {
+    onUploadProgress: function(progressEvent) {
+      let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+    },
+    timeout: 0,
     headers: {
       "Content-Type": "multipart/form-data",
       lang: data.lang
