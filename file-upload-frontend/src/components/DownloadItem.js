@@ -28,7 +28,7 @@ const DownloadItem = ({ fileName, download }) => {
         <p>{fileName}</p>
       </div>
       <Button className={styles.button} onClick={(e) => download(fileName)}>
-        <img src={downloadIcon} alt="download" />
+        <img src={downloadIcon} alt="download" className="download-icon"/>
       </Button>
     </div>
   );

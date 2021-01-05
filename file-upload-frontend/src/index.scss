@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 
 @import "assets/styles/_mixins";
 @import "assets/styles/components/download-item";
 @import "assets/styles/components/download-container";
 
 * {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 body {
@@ -64,6 +64,11 @@ body {
     font-size: 30px;
     color: #0e7d7d;
     margin: 45px 0;
+  }
+
+  .download-icon {
+    width: 15px;
+    height: 14px;
   }
 }
 
@@ -165,6 +170,8 @@ body {
   font-size: 14px;
 
   p {
+    text-overflow: ellipsis;
+    overflow: hidden;
     margin: 0;
   }
 }
@@ -221,5 +228,3 @@ body {
   width: initial !important;
   height: initial !important;
 }
-
-

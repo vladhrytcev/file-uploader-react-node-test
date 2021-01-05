@@ -46,7 +46,7 @@ const DownloadContainer = ({
         </div>
         <Button className={styles.button} onClick={e => downloadFolder({ linkId: id, parent })}>
           <p>{T.downloadAll}</p>
-          <img src={downloadIcon} alt="download" className="icon" />
+          <img src={downloadIcon} alt="download" className="icon download-icon" />
         </Button>
       </div>
       <div className="pb-12">
