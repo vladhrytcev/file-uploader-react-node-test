@@ -38,6 +38,7 @@ export const uploadFiles = async (data) => {
   return await api.post(`/upload/${data.id}`, data.files, {
     onUploadProgress: function(progressEvent) {
       let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+      console.log(percentCompleted)
     },
     timeout: 0,
     headers: {

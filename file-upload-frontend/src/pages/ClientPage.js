@@ -45,7 +45,7 @@ const ClientPage = ({
         </>
       ) : (
         <div className="progress-page">
-          <LoopCircleLoading color="#0E7D7D" size="large" style={{width: 70, height: 70}}/>
+          <LoopCircleLoading color="#0E7D7D" size="large"/>
         </div>
       )}
     </>
