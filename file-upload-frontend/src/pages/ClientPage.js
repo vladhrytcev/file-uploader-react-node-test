@@ -11,7 +11,6 @@ const ClientPage = ({
   getDownloadLink,
   match,
   downloadFile,
-  downloadOrOpenFile,
   downloadFolder,
 }) => {
   useEffect(() => {
@@ -37,7 +36,6 @@ const ClientPage = ({
                   id={downloadLink.link}
                   downloadFile={downloadFile}
                   downloadFolder={downloadFolder}
-                  downloadOrOpenFile={downloadOrOpenFile}
                 />
               ))}
           </div>

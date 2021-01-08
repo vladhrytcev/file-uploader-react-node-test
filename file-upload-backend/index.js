@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import { UPLOAD_DIR } from "./helpers/uploadDir";
 import { connectDB } from "./database";
 import { errorHandler } from "./middlewares/errorHandler";
+import { deleteZipAfterDownload } from "./middlewares/deleteAfterDownload";
 import uploadRouter from "./routes/upload";
 import downloadRouter from "./routes/download";
 
@@ -31,6 +32,8 @@ app.use(
 );
 
 app.use("/api", uploadRouter, downloadRouter);
+app.use('/files', deleteZipAfterDownload, express.static(__dirname + "/uploads"));
+
 app.use(errorHandler);
 
 app.listen(port, () => console.log(`server is running on ${port} port`));

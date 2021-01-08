@@ -14,21 +14,21 @@ const useStyles = makeStyles({
     borderRadius: 10,
     textTransform: "none",
     background: "#fff",
-    minWidth: 'initial'
+    minWidth: "initial",
   },
 });
 
-const DownloadItem = ({ fileName, download, downloadOrOpenItem }) => {
+const DownloadItem = ({ fileName, download }) => {
   const styles = useStyles();
 
   return (
     <div className="download-item">
-      <div className="download-item-file" onClick={e => downloadOrOpenItem(fileName)}>
+      <div className="download-item-file" onClick={(e) => download(fileName)}>
         <img src={fileIcon} alt="file" />
         <p>{fileName}</p>
       </div>
       <Button className={styles.button} onClick={(e) => download(fileName)}>
-        <img src={downloadIcon} alt="download" className="download-icon"/>
+        <img src={downloadIcon} alt="download" className="download-icon" />
       </Button>
     </div>
   );

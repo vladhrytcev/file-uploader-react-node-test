@@ -26,7 +26,6 @@ const DownloadContainer = ({
   files,
   id,
   downloadFile,
-  downloadOrOpenFile,
   downloadFolder,
   T,
 }) => {
@@ -34,10 +33,6 @@ const DownloadContainer = ({
 
   const downloadItem = (fileName) => {
     downloadFile({ linkId: id, parent, fileName });
-  };
-
-  const downloadOrOpenItem = (fileName) => {
-    downloadOrOpenFile({ linkId: id, parent, fileName });
   };
 
   return (
@@ -67,7 +62,6 @@ const DownloadContainer = ({
             files.map((file, index) => (
               <DownloadItem
                 download={downloadItem}
-                downloadOrOpenItem={downloadOrOpenItem}
                 fileName={file}
                 key={index}
               />
