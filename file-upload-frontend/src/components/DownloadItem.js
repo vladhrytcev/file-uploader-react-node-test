@@ -23,11 +23,11 @@ const DownloadItem = ({ fileName, download }) => {
 
   return (
     <div className="download-item">
-      <div className="download-item-file" onClick={(e) => download(fileName)}>
+      <div className="download-item-file" onClick={(e) => download(fileName, false)}>
         <img src={fileIcon} alt="file" />
         <p>{fileName}</p>
       </div>
-      <Button className={styles.button} onClick={(e) => download(fileName)}>
+      <Button className={styles.button} onClick={(e) => download(fileName, true)}>
         <img src={downloadIcon} alt="download" className="download-icon" />
       </Button>
     </div>

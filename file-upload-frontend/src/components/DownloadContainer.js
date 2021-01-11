@@ -31,8 +31,8 @@ const DownloadContainer = ({
 }) => {
   const styles = useStyles();
 
-  const downloadItem = (fileName) => {
-    downloadFile({ linkId: id, parent, fileName });
+  const downloadItem = (fileName, download) => {
+    downloadFile({ linkId: id, parent, fileName, download });
   };
 
   return (

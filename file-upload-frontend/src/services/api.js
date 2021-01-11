@@ -5,9 +5,9 @@ const api = axios.create({
   withCredentials: true,
 });
 
-export const downloadFile = async ({ linkId, parent, fileName }) => {
+export const downloadFile = async ({ linkId, parent, fileName, download }) => {
   return await api
-    .get(`/download/${linkId}/${parent}/${fileName}`)
+    .get(`/download/${linkId}/${parent}/${fileName}`, { headers: { download } })
     .then((res) => res.data);
 };
 

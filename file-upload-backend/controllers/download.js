@@ -22,12 +22,13 @@ export const getFiles = asyncHandler(async (req, res, next) => {
 
 export const downloadFile = asyncHandler(async (req, res, next) => {
   const { linkId, folder, filename } = req.params;
+  const { download } = req.headers
   if (!folder && !filename) return next(FILE_NOT_FOUND);
   const pathName = `/${linkId}/${folder}/${filename}`;
   const filePath = path.resolve(`${UPLOAD_DIR}${pathName}`);
   if (!fs.existsSync(filePath)) return next(FILE_NOT_FOUND);
 
-  res.send(pathName);
+  res.send(pathName + `?download=${download}`);
 });
 
 export const downloadFolder = asyncHandler(async (req, res, next) => {
