@@ -7,7 +7,8 @@ export const loc = {
     or: "or",
     questions: "if you have any questions.",
     noClientFiles: "There's no files on server yet...",
-    downloadAll: "Download all"
+    downloadAll: "Download all",
+    prepToDownload: "Preparing to download..."
   },
   ES: {
     clientFiles: "¡Hemos preparado los archivos para ti!",
@@ -15,7 +16,8 @@ export const loc = {
     or: "o",
     questions: "si tienes alguna pregunta.",
     noClientFiles: "Aún no hay archivos en el servidor ...",
-    downloadAll: "Descargar todo"
+    downloadAll: "Descargar todo",
+    prepToDownload: "Preparando para bajar..."
   },
   RU: {
     clientFiles: "У нас тут файлы для вас",
@@ -23,7 +25,8 @@ export const loc = {
     or: "или",
     questions: "если у вас есть вопросы",
     noClientFiles: "На сервере нет файлов",
-    downloadAll: "Скачать папку"
+    downloadAll: "Скачать папку",
+    prepToDownload: "Подготовка файлов..."
   },
 };
 
