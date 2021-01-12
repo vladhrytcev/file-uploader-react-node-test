@@ -24,15 +24,14 @@ const ClientPage = ({
     <>
       <div className="client-page">
         <h1>{T.clientFiles}</h1>
-        {isLoading && (
+        {isLoading ? (
           <>
             <div className="progress-page">
               <LoopCircleLoading color="#0E7D7D" size="large" />
             </div>
             <h3>{T.prepToDownload}</h3>
           </>
-        )}
-        {downloadLink &&
+        ) : downloadLink &&
           Object.entries(downloadLink.fileTree).map((path, index) => (
             <DownloadContainer
               T={T}
