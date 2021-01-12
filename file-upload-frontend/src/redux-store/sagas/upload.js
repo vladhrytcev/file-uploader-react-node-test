@@ -17,8 +17,8 @@ const uploadAllFiles = function* ({ payload }) {
   }
   const link = yield uploadFiles({files: data, id: payload.id, lang: payload.language});
   const links = yield select((state) => state.links.links)
-  yield put({type: SET_LINKS, payload: [link.data, ...links]});
-  yield put({type: SET_LAST_CREATED_LINK, payload: link.data});
+  yield put({type: SET_LINKS, payload: [link, ...links]});
+  yield put({type: SET_LAST_CREATED_LINK, payload: link});
 };
 
 const uploadSagas = [takeLatest(UPLOAD_FILES, safe(uploadAllFiles))];

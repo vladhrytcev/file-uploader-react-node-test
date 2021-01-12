@@ -5,14 +5,21 @@ const api = axios.create({
   withCredentials: true,
 });
 
+api.interceptors.response.use(
+  (res) => res.data,
+  async (e) => {
+    await Promise.reject(e.response.data);
+  }
+);
+
 export const downloadFile = async ({ linkId, parent, fileName, download }) => {
-  return await api
-    .get(`/download/${linkId}/${parent}/${fileName}`, { headers: { download } })
-    .then((res) => res.data);
+  return await api.get(`/download/${linkId}/${parent}/${fileName}`, {
+    headers: { download },
+  });
 };
 
 export const downloadFolder = async ({ linkId, parent }) => {
-  return await api.get(`/download/${linkId}/${parent}`).then((res) => res.data);
+  return await api.get(`/download/${linkId}/${parent}`);
 };
 
 export const getFileTree = async (id) => {

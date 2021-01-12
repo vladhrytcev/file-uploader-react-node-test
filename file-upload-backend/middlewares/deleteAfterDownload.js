@@ -12,7 +12,7 @@ export const deleteZipAfterDownload = (req, res, next) => {
   else res.setHeader("content-disposition", "attachment");
 
   req.connection.on("close", () => {
-    if (fileExt === "zip") {
+    if (fileExt === "tar") {
       rimraf(file, {}, () => {});
     }
   });

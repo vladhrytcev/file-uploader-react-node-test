@@ -5,7 +5,7 @@ import { GET_LINKS, SET_LINKS, DELETE_LINK } from "../actions/types";
 
 const getAllLinks = function* () {
   const links = yield getLinks();
-  yield put({type: SET_LINKS, payload: links.data});
+  yield put({type: SET_LINKS, payload: links});
 };
 
 const deleteFilesLink = function* ({ payload }) {

@@ -11,17 +11,17 @@ import { downloadAction } from "../../utils/downloadAction";
 
 const getDownloadLink = function* ({ payload }) {
   const link = yield getFileTree(payload);
-  yield put({ type: SET_DOWNLOAD_LINK, payload: link.data });
+  yield put({ type: SET_DOWNLOAD_LINK, payload: link });
 };
 
 const downloadUserFile = function* ({ payload }) {
   const downloadUrl = yield downloadFile({ ...payload });
-  downloadAction(downloadUrl, payload.fileName);
+  downloadAction(downloadUrl, downloadUrl.split('/').pop());
 };
 
 const downloadUserFolder = function* ({ payload }) {
-  const link = yield downloadFolder({ ...payload });
-  downloadAction(link, `${payload.parent}.zip`);
+  const downloadUrl = yield downloadFolder({ ...payload });
+  downloadAction(downloadUrl, downloadUrl.split('/').pop());
 };
 
 const downloadSagas = [

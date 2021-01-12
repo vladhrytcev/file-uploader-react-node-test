@@ -6,7 +6,7 @@ const safeWrapper = function* (saga, ...args) {
     yield put({ type: SET_LOADING, payload: true });
     yield saga(args[0]);
   } catch (err) {
-    yield put({ type: SET_ERROR, payload: err.response?.data || err });
+    yield put({ type: SET_ERROR, payload: err });
   } finally {
     yield put({ type: SET_LOADING, payload: false });
   }
