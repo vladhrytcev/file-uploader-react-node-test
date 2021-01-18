@@ -5,12 +5,12 @@ const Footer = ({ T }) => {
     <footer className="footer">
       <p>
         {T.contactUs}{" "}
-        <a href="tel:03300218251" className="footer-link">
-          0330 021 8251
+        <a href={`tel:${T.phone}`} className="footer-link">
+          {T.phone}
         </a>{" "}
         {T.or}{" "}
-        <a href="mailto:info@kingsoftranslation.co.uk" className="footer-link">
-          info@kingsoftranslation.co.uk
+        <a href={`mailto:${T.email}`} className="footer-link">
+          {T.email}
         </a>{" "}
         {T.questions}
       </p>

@@ -9,6 +9,7 @@ import Visited from "../components/Visited";
 import { copyToclipBoard } from "../utils/copyToClipboard";
 import FileStack from "../components/FileStack";
 import addIcon from "../assets/images/plus_no_bg.svg"
+import { loc } from '../localization'
 
 const useStyles = makeStyles({
   root: {
@@ -71,7 +72,7 @@ const useStyles = makeStyles({
   },
 });
 
-const options = ["EN", "ES", "RU"];
+const options = Object.keys(loc);
 
 const defaultFileStack = { packageName: "", files: [], id: Date.now() };
 
