@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {CancelToken} from "axios";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_URL,
@@ -40,12 +40,13 @@ export const uploadFiles = async (data) => {
       let percentCompleted = Math.round(
         (progressEvent.loaded * 100) / progressEvent.total
       );
-      console.log(percentCompleted);
+      data.setUploadProgress(percentCompleted);
     },
+    cancelToken: new CancelToken(cancel => data.cancelFileUpload.current = cancel),
     timeout: 0,
     headers: {
       "Content-Type": "multipart/form-data",
       lang: data.lang,
     },
-  });
+  })
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
@@ -10,6 +10,11 @@ import { copyToclipBoard } from "../utils/copyToClipboard";
 import FileStack from "../components/FileStack";
 import addIcon from "../assets/images/plus_no_bg.svg"
 import { loc } from '../localization'
+import styled from 'styled-components';
+
+const StyledProgressBar = styled.div`
+  width: ${({ progress }) => progress + "%"};
+`;
 
 const useStyles = makeStyles({
   root: {
@@ -70,6 +75,53 @@ const useStyles = makeStyles({
     borderRadius: 3,
     fontSize: 14,
   },
+  progressBarContainer:{
+    width: "100%",
+    display: "flex",
+    height: "35px",
+    marginBottom: "15px"
+  },
+  progressBar: {
+    width: "90%",
+    height: "35px",
+    boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.05)",
+    borderRadius: "2px",
+    marginBottom: "15px",
+    backgroundColor: "#0e7d7d47",
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "white",
+    fontWeight: "bold",
+    fontSize: "14px"
+
+  },
+  progressBarInner: {
+    transitionDuration: ".3s",
+    background: "#0E7D7D",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    marginRight: "auto",
+    borderRadius: "3px"
+  },
+  progress: {
+    position: "absolute",
+  },
+  cancelBut: {
+    height: "100%",
+    color: "#fe5b5b",
+    fontWeight: "bold",
+    fontSize: "12px",
+    marginLeft: "8px"
+  },
+  cancelText: {
+    fontWeight: "bold",
+    fontSize: "14px",
+    marginBottom: "15px"
+  }
 });
 
 const options = Object.keys(loc);
@@ -88,10 +140,33 @@ const AdminPage = ({
   const [fileStacks, setFileStacks] = useState([defaultFileStack]);
   const [language, setLanguage] = useState(options[0]);
   const classes = useStyles();
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isLoad, setIsLoad] = useState(false);
+  const [isCanceled, setIsCanceled] = useState(false);
+
+  const cancelFileUpload = useRef(null);
+
+
+  useEffect(()=>{
+    if(fileStacks[0].files.length === 0){
+      setUploadProgress(0);
+      setIsLoad(false);
+    }
+  },fileStacks);
 
   const upload = async () => {
-    uploadFiles({ fileStacks, language, id: Date.now() });
+    setIsLoad(true);
+    setIsCanceled(false);
+    uploadFiles({ fileStacks, language, id: Date.now(), setUploadProgress: setUploadProgress, cancelFileUpload: cancelFileUpload });
   };
+
+  const onCancelUpload = () => {
+    if(cancelFileUpload.current){
+      cancelFileUpload.current("User has canceled the file upload.");
+      setIsLoad(false);
+      setIsCanceled(true);
+    }
+  }
 
   const copyClipBoard = (e) => {
     if (window.navigator.clipboard)
@@ -126,6 +201,7 @@ const AdminPage = ({
       } else return fileStack;
     });
     setFileStacks(result);
+    setIsCanceled(false);
   };
 
   const deleteFileStack = (id) => {
@@ -167,6 +243,16 @@ const AdminPage = ({
             >
               Add one more
             </Button>
+            {(isLoad && fileStacks[0].files.length > 0) && 
+            <div className={classes.progressBarContainer}>
+              <div className={classes.progressBar}>
+                <span className={classes.progress}>{uploadProgress}%</span>
+                <StyledProgressBar className={classes.progressBarInner} progress={uploadProgress}></StyledProgressBar>
+              </div>
+              <Button className={classes.cancelBut} onClick={()=>{onCancelUpload()}}>Cancel</Button>
+            </div>}
+            {isCanceled && <span className={classes.cancelText}>User has canceled the file upload.</span>}
+            
             <div>
               {!isLoading ? (
                 !lastCreated ? (
