@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core";
 import Visited from "../components/Visited";
@@ -141,7 +140,6 @@ const AdminPage = ({
   const [language, setLanguage] = useState(options[0]);
   const classes = useStyles();
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [isLoad, setIsLoad] = useState(false);
   const [isCanceled, setIsCanceled] = useState(false);
 
   const cancelFileUpload = useRef(null);
@@ -150,20 +148,20 @@ const AdminPage = ({
   useEffect(()=>{
     if(fileStacks[0].files.length === 0){
       setUploadProgress(0);
-      setIsLoad(false);
     }
   },fileStacks);
 
+  // TODO get rid of all this local bools, use pattern: request, success, failure
+  // saga routines or something like this
   const upload = async () => {
-    setIsLoad(true);
     setIsCanceled(false);
     uploadFiles({ fileStacks, language, id: Date.now(), setUploadProgress: setUploadProgress, cancelFileUpload: cancelFileUpload });
   };
 
   const onCancelUpload = () => {
-    if(cancelFileUpload.current){
+    if(cancelFileUpload.current) {
       cancelFileUpload.current("User has canceled the file upload.");
-      setIsLoad(false);
+      setUploadProgress(0);
       setIsCanceled(true);
     }
   }
@@ -243,15 +241,6 @@ const AdminPage = ({
             >
               Add one more
             </Button>
-            {(isLoad && fileStacks[0].files.length > 0) && 
-            <div className={classes.progressBarContainer}>
-              <div className={classes.progressBar}>
-                <span className={classes.progress}>{uploadProgress}%</span>
-                <StyledProgressBar className={classes.progressBarInner} progress={uploadProgress}></StyledProgressBar>
-              </div>
-              <Button className={classes.cancelBut} onClick={()=>{onCancelUpload()}}>Cancel</Button>
-            </div>}
-            {isCanceled && <span className={classes.cancelText}>User has canceled the file upload.</span>}
             
             <div>
               {!isLoading ? (
@@ -293,10 +282,15 @@ const AdminPage = ({
                   </>
                 )
               ) : (
-                <div className="progress">
-                  <CircularProgress />
-                </div>
-              )}
+                isLoading && fileStacks[0].files.length > 0 && uploadProgress < 100) &&
+                <div className={classes.progressBarContainer}>
+                  <div className={classes.progressBar}>
+                    <span className={classes.progress}>{uploadProgress}%</span>
+                    <StyledProgressBar className={classes.progressBarInner} progress={uploadProgress} />
+                  </div>
+                  <Button className={classes.cancelBut} onClick={onCancelUpload}>Cancel</Button>
+                </div>}
+              {isLoading && isCanceled && <span className={classes.cancelText}>User has canceled the file upload.</span>}
             </div>
           </div>
         </div>

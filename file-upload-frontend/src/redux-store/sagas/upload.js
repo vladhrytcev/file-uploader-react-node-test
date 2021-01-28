@@ -15,7 +15,7 @@ const uploadAllFiles = function* ({ payload }) {
       yield data.append(fileStack.packageName, file.data)
     }
   }
-  console.log(payload);
+
   const link = yield uploadFiles({files: data, id: payload.id, lang: payload.language, setUploadProgress: payload.setUploadProgress, cancelFileUpload: payload.cancelFileUpload});
   const links = yield select((state) => state.links.links)
   yield put({type: SET_LINKS, payload: [link, ...links]});
