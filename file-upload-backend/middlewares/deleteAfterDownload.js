@@ -3,8 +3,8 @@ import { UPLOAD_DIR } from "../helpers/uploadDir";
 
 export const deleteZipAfterDownload = (req, res, next) => {
   const { download } = req.query;
-  const fileName = req.originalUrl.replace("/files", "");
-  const fileExt = fileName.split(".").pop().slice(0, 3);
+  const fileName = req.originalUrl.replace("/files", "").split('?')[0];
+  const fileExt = fileName.split(".").pop();
   const file = `${UPLOAD_DIR}/${fileName}`;
 
   if (fileExt === "pdf" && download !== "true")
