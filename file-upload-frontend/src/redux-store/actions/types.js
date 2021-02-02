@@ -4,6 +4,8 @@ export const DELETE_LINK = "DELETE_LINK"
 
 export const SET_LAST_CREATED_LINK = "SET_LAST_CREATED_LINK"
 
+export const SET_IS_AUTH = "SET_IS_AUTH"
+
 export const GET_DOWNLOAD_LINK = "GET_DOWNLOAD_LINK"
 export const SET_DOWNLOAD_LINK = "SET_DOWNLOAD_LINK"
 

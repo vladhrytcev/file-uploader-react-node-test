@@ -2,8 +2,8 @@ import { connect } from "react-redux";
 import AdminPage from "../pages/AdminPage";
 import { getLinks, uploadFiles, resetLastCreateLink, deleteLink } from "../redux-store/actions";
 
-const mapStateToProps = ({ links: { links, lastCreated } , errorLoading: { isLoading }}) => ({
-  links, isLoading, lastCreated
+const mapStateToProps = ({ links: { links, lastCreated } , errorLoading: { isLoading, isAuth }}) => ({
+  links, isLoading, lastCreated, isAuth
 });
 
 const mapDispatchToProps = (dispatch) => ({

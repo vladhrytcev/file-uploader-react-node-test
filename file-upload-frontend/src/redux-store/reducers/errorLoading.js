@@ -1,8 +1,9 @@
-import { SET_ERROR, SET_LOADING } from "../actions/types";
+import { SET_ERROR, SET_LOADING, SET_IS_AUTH } from "../actions/types";
 
 const initialState = {
   error: "",
   isLoading: false,
+  isAuth: false
 };
 
 const errorLoading = (state = initialState, action) => {
@@ -16,6 +17,11 @@ const errorLoading = (state = initialState, action) => {
       return {
         ...state,
         isLoading: action.payload,
+      };
+    case SET_IS_AUTH:
+      return {
+        ...state,
+        isAuth: action.payload,
       };
     default:
       return state;

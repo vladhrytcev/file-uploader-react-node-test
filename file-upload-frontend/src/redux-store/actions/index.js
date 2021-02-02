@@ -6,7 +6,13 @@ import {
   GET_DOWNLOAD_LINK,
   DOWNLOAD_FILE,
   DOWNLOAD_FOLDER,
+  SET_IS_AUTH
 } from "./types";
+
+export const setIsAuth = (isAuth) => ({
+  type: SET_IS_AUTH,
+  payload: isAuth
+});
 
 export const getLinks = () => ({
   type: GET_LINKS,

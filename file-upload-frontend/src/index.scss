@@ -129,6 +129,10 @@ body {
     .add-icon-margin {
       margin-left: 20px !important;
     }
+
+    .MuiOutlinedInput-input {
+      padding: 9.5px 44px 9.5px 14px !important;
+    }
   }
 }
 
@@ -187,10 +191,6 @@ body {
   font-size: 14px;
   color: #444444;
   margin: 0 0 4px 0;
-}
-
-.MuiOutlinedInput-input {
-  padding: 9.5px 44px 9.5px 14px !important;
 }
 
 .progress {

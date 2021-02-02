@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -10,6 +9,7 @@ import FileStack from "../components/FileStack";
 import addIcon from "../assets/images/plus_no_bg.svg"
 import { loc } from '../localization'
 import styled from 'styled-components';
+import { history } from "../utils/history";
 
 const StyledProgressBar = styled.div`
   width: ${({ progress }) => progress + "%"};
@@ -134,7 +134,8 @@ const AdminPage = ({
   isLoading,
   resetLastCreateLink,
   lastCreated,
-  deleteLink
+  deleteLink,
+  isAuth
 }) => {
   const [fileStacks, setFileStacks] = useState([defaultFileStack]);
   const [language, setLanguage] = useState(options[0]);
@@ -142,8 +143,13 @@ const AdminPage = ({
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isCanceled, setIsCanceled] = useState(false);
 
-  const cancelFileUpload = useRef(null);
+  useEffect(() => {
+    if(!isAuth) {
+      history.push('/login')
+    }
+  },[])
 
+  const cancelFileUpload = useRef(null);
 
   useEffect(()=>{
     if(fileStacks[0].files.length === 0){
