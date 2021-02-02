@@ -1,5 +1,6 @@
 import ClientPage from "./containers/ClientPage";
 import AdminPage from "./containers/AdminPage";
+import Login from "./containers/Login";
 
 export const routes = [
   {
@@ -9,5 +10,9 @@ export const routes = [
   {
     component: AdminPage,
     path: "/",
+  },
+  {
+    component: Login,
+    path: "/login",
   },
 ];
