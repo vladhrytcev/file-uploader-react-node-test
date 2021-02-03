@@ -4,7 +4,7 @@ export const downloadAction = (downloadUrl, fileName) => {
   link.href = `${process.env.REACT_APP_DOWNLOAD_URL}${downloadUrl}`;
 
   if(ext === 'pdf') link.target = '_blank'
-  link.download = fileName;
+  link.download = fileName.split('?')[0];
   document.body.appendChild(link);
   link.click();
   link.remove();
