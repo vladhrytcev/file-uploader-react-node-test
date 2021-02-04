@@ -4,6 +4,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core";
 import Visited from "../components/Visited";
+import Header from "../components/Header";
 import { copyToclipBoard } from "../utils/copyToClipboard";
 import FileStack from "../components/FileStack";
 import addIcon from "../assets/images/plus_no_bg.svg"
@@ -135,7 +136,8 @@ const AdminPage = ({
   resetLastCreateLink,
   lastCreated,
   deleteLink,
-  isAuth
+  isAuth,
+  setIsAuth
 }) => {
   const [fileStacks, setFileStacks] = useState([defaultFileStack]);
   const [language, setLanguage] = useState(options[0]);
@@ -147,7 +149,7 @@ const AdminPage = ({
     if(!isAuth) {
       history.push('/login')
     }
-  },[])
+  },[isAuth])
 
   const cancelFileUpload = useRef(null);
 
@@ -219,94 +221,96 @@ const AdminPage = ({
   }, []);
 
   return (
-    <div className="admin-page">
-      <div className="admin-upload-files">
-        <div className="admin-upload-files-container">
-          <div className="admin-upload-files-container-wrapper">
-            <h1>Upload files</h1>
-            {fileStacks.map((fileStack) => (
-              <FileStack
-                key={fileStack.id}
-                id={fileStack.id}
-                packageName={fileStack.packageName}
-                changeName={changePackageName}
-                files={fileStack.files}
-                setFiles={setPackageFiles}
-                deleteFileStack={deleteFileStack}
-              />
-            ))}
-            <Button
-              className={classes.button}
-              endIcon={<img src={addIcon} alt="add" className="add-icon-margin" />}
-              onClick={(e) =>
-                setFileStacks([
-                  ...fileStacks,
-                  { packageName: "", files: [], id: Date.now() },
-                ])
-              }
-            >
-              Add one more
-            </Button>
-            
-            <div>
-              {!isLoading ? (
-                !lastCreated ? (
-                  <div className="d-flex p-0">
-                    <Select
-                      labelId="demo-simple-select-autowidth-label"
-                      id="demo-simple-select-autowidth"
-                      className={classes.select}
-                      variant="outlined"
-                      value={language}
-                      onChange={(e) => changeLanguage(e.target.value)}
-                      autoWidth
-                    >
-                      {options.map((option) => (
-                        <MenuItem value={option} key={option}>
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    <Button onClick={upload} className={classes.linkButton}>
-                      Get a download link
-                    </Button>
-                  </div>
-                ) : (
-                  <>
-                    <p className="download-link-description">
-                      Your download link
-                    </p>
-                    <div className="download-link-text">
-                      <p>{lastCreated.address}</p>
-                      <Button
-                        className={classes.downloadLink}
-                        onClick={(e) => copyClipBoard(e)}
+    <>
+      <Header isAuth={isAuth} setIsAuth={setIsAuth} />
+      <div className="admin-page">
+        <div className="admin-upload-files">
+          <div className="admin-upload-files-container">
+            <div className="admin-upload-files-container-wrapper">
+              <h1>Upload files</h1>
+              {fileStacks.map((fileStack) => (
+                <FileStack
+                  key={fileStack.id}
+                  id={fileStack.id}
+                  packageName={fileStack.packageName}
+                  changeName={changePackageName}
+                  files={fileStack.files}
+                  setFiles={setPackageFiles}
+                  deleteFileStack={deleteFileStack}
+                />
+              ))}
+              <Button
+                className={classes.button}
+                endIcon={<img src={addIcon} alt="add" className="add-icon-margin" />}
+                onClick={(e) =>
+                  setFileStacks([
+                    ...fileStacks,
+                    { packageName: "", files: [], id: Date.now() },
+                  ])
+                }
+              >
+                Add one more
+              </Button>
+
+              <div>
+                {!isLoading ? (
+                  !lastCreated ? (
+                    <div className="d-flex p-0">
+                      <Select
+                        labelId="demo-simple-select-autowidth-label"
+                        id="demo-simple-select-autowidth"
+                        className={classes.select}
+                        variant="outlined"
+                        value={language}
+                        onChange={(e) => changeLanguage(e.target.value)}
+                        autoWidth
                       >
-                        Copy
+                        {options.map((option) => (
+                          <MenuItem value={option} key={option}>
+                            {option}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      <Button onClick={upload} className={classes.linkButton}>
+                        Get a download link
                       </Button>
                     </div>
-                  </>
-                )
-              ) : (
-                isLoading && fileStacks[0].files.length > 0 && uploadProgress < 100) &&
-                <div className={classes.progressBarContainer}>
-                  <div className={classes.progressBar}>
-                    <span className={classes.progress}>{uploadProgress}%</span>
-                    <StyledProgressBar className={classes.progressBarInner} progress={uploadProgress} />
-                  </div>
-                  <Button className={classes.cancelBut} onClick={onCancelUpload}>Cancel</Button>
-                </div>}
-              {isLoading && isCanceled && <span className={classes.cancelText}>User has canceled the file upload.</span>}
+                  ) : (
+                    <>
+                      <p className="download-link-description">
+                        Your download link
+                      </p>
+                      <div className="download-link-text">
+                        <p>{lastCreated.address}</p>
+                        <Button
+                          className={classes.downloadLink}
+                          onClick={(e) => copyClipBoard(e)}
+                        >
+                          Copy
+                        </Button>
+                      </div>
+                    </>
+                  )
+                ) : (
+                  isLoading && fileStacks[0].files.length > 0 && uploadProgress < 100) &&
+                  <div className={classes.progressBarContainer}>
+                    <div className={classes.progressBar}>
+                      <span className={classes.progress}>{uploadProgress}%</span>
+                      <StyledProgressBar className={classes.progressBarInner} progress={uploadProgress} />
+                    </div>
+                    <Button className={classes.cancelBut} onClick={onCancelUpload}>Cancel</Button>
+                  </div>}
+                {isLoading && isCanceled && <span className={classes.cancelText}>User has canceled the file upload.</span>}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="admin-upload-files">
-        <div className="admin-upload-files-container mw-70">
-          <h1>Previous files</h1>
-          {links.length
-            ? links.map((link) => (
+        <div className="admin-upload-files">
+          <div className="admin-upload-files-container mw-70">
+            <h1>Previous files</h1>
+            {links.length
+              ? links.map((link) => (
                 <Visited
                   key={link._id}
                   id={link.link}
@@ -315,10 +319,11 @@ const AdminPage = ({
                   removeLink={deleteLink}
                 />
               ))
-            : null}
+              : null}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

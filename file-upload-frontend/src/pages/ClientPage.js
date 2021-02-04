@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 
+import Header from "../components/Header";
 import Footer from "../components/Footer";
 import DownloadContainer from "../components/DownloadContainer";
 import T from "../localization";
@@ -22,6 +23,7 @@ const ClientPage = ({
 
   return (
     <>
+      <Header />
       <div className="client-page">
         <h1>{T.clientFiles}</h1>
         {isLoading ? (

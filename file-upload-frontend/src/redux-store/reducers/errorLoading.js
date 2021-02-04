@@ -1,9 +1,10 @@
 import { SET_ERROR, SET_LOADING, SET_IS_AUTH } from "../actions/types";
+import { getToken } from "../../utils/localStorageHandler";
 
 const initialState = {
   error: "",
   isLoading: false,
-  isAuth: true
+  isAuth: getToken()
 };
 
 const errorLoading = (state = initialState, action) => {

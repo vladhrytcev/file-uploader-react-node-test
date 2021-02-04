@@ -10,6 +10,7 @@ import {
 import { ThemeProvider } from "@material-ui/core/styles";
 import Logo from "../assets/images/login-logo.svg";
 import { history } from "../utils/history";
+import { setToken } from "../utils/localStorageHandler";
 
 const theme = createMuiTheme({
   palette: {
@@ -79,6 +80,7 @@ const Login = ({ setIsAuth }) => {
   const ClickHandler = () => {
     if (email === testEmail && password === testPassword) {
       setIsAuth(true);
+      setToken();
       history.push("/");
     }
   };
