@@ -16,7 +16,7 @@ const getDownloadLink = function* ({ payload }) {
 
 const downloadUserFile = function* ({ payload }) {
   const downloadUrl = yield downloadFile({ ...payload });
-  downloadAction(downloadUrl, downloadUrl.split('/').pop());
+  downloadAction(downloadUrl, downloadUrl.split('/').pop().split('?')[0]);
 };
 
 const downloadUserFolder = function* ({ payload }) {

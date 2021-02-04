@@ -3,7 +3,7 @@ import { SET_ERROR, SET_LOADING, SET_IS_AUTH } from "../actions/types";
 const initialState = {
   error: "",
   isLoading: false,
-  isAuth: false
+  isAuth: true
 };
 
 const errorLoading = (state = initialState, action) => {
