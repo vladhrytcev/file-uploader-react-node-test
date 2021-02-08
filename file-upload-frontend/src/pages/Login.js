@@ -6,6 +6,7 @@ import {
   Button,
   makeStyles,
   createMuiTheme,
+  withStyles,
 } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core/styles";
 import Logo from "../assets/images/login-logo.svg";
@@ -24,7 +25,7 @@ const useStyles = makeStyles({
     width: "100%",
     margin: "100px auto 0 auto",
     boxSizing: "border-box",
-    padding: "60px 80px 134px 80px",
+    padding: "60px 80px 168px 80px",
     display: "flex",
     justifyContent: "center",
     flexDirection: "column",
@@ -48,7 +49,7 @@ const useStyles = makeStyles({
     width: "100%",
     background: "#0E7D7D",
     textTransform: "none",
-    padding: "13px",
+    padding: "11px 13px",
     boxSizing: "border-box",
     color: "#fff",
     fontWeight: 600,
@@ -67,7 +68,21 @@ const useStyles = makeStyles({
       marginBottom: 15,
     },
   },
+  inputMargin: {
+    marginBottom: 10
+  }
 });
+
+const StyledInput = withStyles({
+  "@global": {
+    ".MuiOutlinedInput-input": {
+      padding: '13.5px 14px',
+    },
+    ".MuiInputLabel-outlined": {
+      transform: 'translate(14px, 14px) scale(1)',
+    }
+  },
+})(TextField);
 
 const Login = ({ setIsAuth }) => {
   const classes = useStyles();
@@ -90,16 +105,16 @@ const Login = ({ setIsAuth }) => {
       <img src={Logo} alt="logo" className={classes.logo} />
       <Typography className={classes.heading}>Log in</Typography>
       <ThemeProvider theme={theme}>
-        <TextField
+        <StyledInput
           variant="outlined"
           className={classes.input}
           label="Email address"
           onChange={(e) => setEmail(e.target.value)}
         />
-        <TextField
+        <StyledInput
           type="password"
           variant="outlined"
-          className={classes.input}
+          className={`${classes.input} ${classes.inputMargin}`}
           label="Password"
           onChange={(e) => setPassword(e.target.value)}
         />

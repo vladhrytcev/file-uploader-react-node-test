@@ -153,15 +153,9 @@ const AdminPage = ({
 
   const cancelFileUpload = useRef(null);
 
-  useEffect(()=>{
-    if(fileStacks[0].files.length === 0){
-      setUploadProgress(0);
-    }
-  },fileStacks);
-
   // TODO get rid of all this local bools, use pattern: request, success, failure
   // saga routines or something like this
-  const upload = async () => {
+  const upload = () => {
     setIsCanceled(false);
     uploadFiles({ fileStacks, language, id: Date.now(), setUploadProgress: setUploadProgress, cancelFileUpload: cancelFileUpload });
   };
@@ -174,9 +168,9 @@ const AdminPage = ({
     }
   }
 
-  const copyClipBoard = (e) => {
-    if (window.navigator.clipboard)
-      window.navigator.clipboard.writeText(lastCreated.address);
+  const copyClipBoard = async (e) => {
+    if (window.navigator?.clipboard)
+     await window.navigator.clipboard.writeText(lastCreated.address);
     else copyToclipBoard(lastCreated.address);
     e.target.innerText = "Copied";
   };
