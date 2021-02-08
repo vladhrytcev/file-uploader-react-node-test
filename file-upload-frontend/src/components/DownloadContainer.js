@@ -14,8 +14,6 @@ const useStyles = makeStyles({
     fontWeight: "600",
     fontSize: 12,
     borderRadius: 3,
-    border: "none",
-    cursor: "pointer",
     textTransform: "none",
     background: "#fff",
   },
