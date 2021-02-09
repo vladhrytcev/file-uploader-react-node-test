@@ -12,6 +12,8 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import Logo from "../assets/images/login-logo.svg";
 import { history } from "../utils/history";
 import { setToken } from "../utils/localStorageHandler";
+import loginBG from '../assets/images/login-bg.png'
+import errorMessage from '../assets/images/errorMessage.svg'
 
 const theme = createMuiTheme({
   palette: {
@@ -20,6 +22,12 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles({
+  loginPage: {
+    height: '1080px',
+    backgroundImage: `url(${loginBG})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'bottom left',
+  },
   loginContainer: {
     maxWidth: 561,
     width: "100%",
@@ -54,6 +62,7 @@ const useStyles = makeStyles({
     color: "#fff",
     fontWeight: 600,
     transition: "all .2s ease-in",
+    marginBottom: 7,
     "&:hover": {
       background: "#0E7D7D",
       opacity: 0.7,
@@ -64,9 +73,6 @@ const useStyles = makeStyles({
     borderRadius: 3,
     fontSize: 14,
     marginBottom: 20,
-    "&:last-child": {
-      marginBottom: 15,
-    },
   },
   inputMargin: {
     marginBottom: 10
@@ -91,37 +97,51 @@ const Login = ({ setIsAuth }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState('');
 
   const ClickHandler = () => {
     if (email === testEmail && password === testPassword) {
       setIsAuth(true);
       setToken();
       history.push("/");
-    }
+    } else setError('error')
   };
 
+  const emailHandler = (value) => {
+    setEmail(value);
+    setError('')
+  }
+
+  const passwordHandler = (value) => {
+    setPassword(value);
+    setError('')
+  }
+
   return (
-    <Paper className={classes.loginContainer}>
-      <img src={Logo} alt="logo" className={classes.logo} />
-      <Typography className={classes.heading}>Log in</Typography>
-      <ThemeProvider theme={theme}>
-        <StyledInput
-          variant="outlined"
-          className={classes.input}
-          label="Email address"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <StyledInput
-          type="password"
-          variant="outlined"
-          className={`${classes.input} ${classes.inputMargin}`}
-          label="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </ThemeProvider>
-      <Button className={classes.button} onClick={ClickHandler}>
-        Sign in
-      </Button>
+    <Paper className={classes.loginPage}>
+      <Paper className={classes.loginContainer}>
+        <img src={Logo} alt="logo" className={classes.logo} />
+        <Typography className={classes.heading}>Log in</Typography>
+        <ThemeProvider theme={theme}>
+          <StyledInput
+            variant="outlined"
+            className={classes.input}
+            label="Email address"
+            onChange={(e) => emailHandler(e.target.value)}
+          />
+          <StyledInput
+            type="password"
+            variant="outlined"
+            className={`${classes.input} ${classes.inputMargin}`}
+            label="Password"
+            onChange={(e) => passwordHandler(e.target.value)}
+          />
+        </ThemeProvider>
+        <Button className={classes.button} onClick={ClickHandler}>
+          Sign in
+        </Button>
+        {error && <img src={errorMessage} alt="error" className={classes.logo} style={{transform: 'scale(0.8)'}}/>}
+      </Paper>
     </Paper>
   );
 };
