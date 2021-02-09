@@ -13,7 +13,7 @@ import Logo from "../assets/images/login-logo.svg";
 import { history } from "../utils/history";
 import { setToken } from "../utils/localStorageHandler";
 import loginBG from '../assets/images/login-bg.png'
-import errorMessage from '../assets/images/errorMessage.svg'
+import errorMessage from '../assets/images/errorMessage.png'
 
 const theme = createMuiTheme({
   palette: {
@@ -62,7 +62,7 @@ const useStyles = makeStyles({
     color: "#fff",
     fontWeight: 600,
     transition: "all .2s ease-in",
-    marginBottom: 7,
+    marginBottom: 21,
     "&:hover": {
       background: "#0E7D7D",
       opacity: 0.7,
@@ -76,6 +76,16 @@ const useStyles = makeStyles({
   },
   inputMargin: {
     marginBottom: 10
+  },
+  errorMessage: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#CC2936'
+  },
+  errorText: {
+    margin: 0,
+    fontWeight: 600,
   }
 });
 
@@ -140,7 +150,12 @@ const Login = ({ setIsAuth }) => {
         <Button className={classes.button} onClick={ClickHandler}>
           Sign in
         </Button>
-        {error && <img src={errorMessage} alt="error" className={classes.logo} style={{transform: 'scale(0.8)'}}/>}
+        {error &&
+          <div className={classes.errorMessage}>
+            <img src={errorMessage} alt="error"/>
+            <p className={classes.errorText}>Ooops...Incorrect Email or Password</p>
+          </div>
+        }
       </Paper>
     </Paper>
   );
